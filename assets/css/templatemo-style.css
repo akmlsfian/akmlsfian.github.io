@@ -35,7 +35,6 @@ body {
     }
 }
 
-
 /* Basic */
 
 body {
@@ -237,7 +236,7 @@ html {
     left: 10%;
   -webkit-transition: -webkit-transform 233ms cubic-bezier(0, 0, 0.21, 1);
   -webkit-overflow-scrolling: touch;
-  background-color: #3304b6e5;
+  background-color: #00000085;
   box-sizing: border-box;
   height: 100vh;  
   max-height: 100vh !important;
@@ -767,7 +766,8 @@ section.contact-me {
         display: inline-block;
     }    
 
-    .menu {        
+    .menu { 
+        background-color: #000000;       
         width: 320px;
         -webkit-transform: translateX(-100%) !important;
         transform: translateX(-100%) !important;
