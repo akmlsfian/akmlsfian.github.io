@@ -545,6 +545,8 @@ pre code {
 
 @media (min-width: 576px) {
   .container {
+    padding-right: 1px;
+    padding-left: 1px;
     max-width: 540px;
   }
 }
