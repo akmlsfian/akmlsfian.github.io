@@ -1,217 +1,139 @@
 <template>
-  <ThreeBackground />
-  <EntryScreen v-if="!entered" @enter="startExperience" />
-  
-  <transition name="fade-app">
-    <div v-if="entered" class="app-layout">
-      <NavBar @navigate="scrollToSection" :activeSection="activeSection" />
+  <div class="app-container">
+    <ParticlesBackground />
+    <NavBar />
+    
+    <main>
+      <EntryScreen @enter="handleEnter" />
       
-      <main class="main-content" @scroll="onScroll">
-        <section id="about" class="page-section" ref="about">
+      <div v-if="entered" class="content-wrapper">
+        <section id="about" class="page-section">
           <div class="container">
             <BioSection />
           </div>
         </section>
 
-        <section id="skills" class="page-section" ref="skills">
+        <section id="skills" class="page-section">
           <div class="container">
             <SkillsSection />
           </div>
         </section>
 
-        <section id="portfolio" class="page-section" ref="portfolio">
+        <section id="portfolio" class="page-section">
           <div class="container">
-            <div class="section-heading">
-              <h2>Gallery</h2>
-              <div class="line-dec"></div>
-              <p>A snapshot of my past web development projects.</p>
-            </div>
             <PortfolioGallery />
           </div>
         </section>
-
-        <section id="contact" class="page-section" ref="contact">
-          <div class="container">
-            <div class="section-heading">
-              <h2>Contact Me</h2>
-              <div class="line-dec"></div>
-              <p>If you'd like to get in touch with me, please feel free to reach out at any time.</p>
-            </div>
-            
-            <div class="contact-grid">
-              <a href="https://wa.me/60194320001?text=Hi" target="_blank" class="contact-card">
-                <Icon icon="mdi:whatsapp" width="32" />
-                <span>+6 019-432 0001</span>
-              </a>
-              <a href="mailto:akmalsir46@gmail.com" class="contact-card">
-                <Icon icon="mdi:email" width="32" />
-                <span>akmalsir46@gmail.com</span>
-              </a>
-              <a href="https://linkedin.com/in/akmlsfian" target="_blank" class="contact-card">
-                <Icon icon="mdi:linkedin" width="32" />
-                <span>Akmal Sufian</span>
-              </a>
-              <a href="https://github.com/akmlsfian" target="_blank" class="contact-card">
-                <Icon icon="mdi:github" width="32" />
-                <span>akmlsfian</span>
-              </a>
-            </div>
-            
-             <div class="resume-links">
-               <a href="/DOCS/RESUME (Software Programmer) MOHAMAD AKMAL.pdf" target="_blank" class="btn btn-primary">
-                 <Icon icon="mdi:file-document" /> Download Resume
-               </a>
-             </div>
-          </div>
-        </section>
         
-        <footer class="site-footer">
-          <p>&copy; {{ new Date().getFullYear() }} Akmal Sufian. Built with Vue 3 & Three.js.</p>
+        <footer class="main-footer">
+          <div class="container">
+            <div class="footer-content">
+              <p>&copy; {{ new Date().getFullYear() }} akmlsfian. All rights reserved.</p>
+              <div class="social-links">
+                <a href="#" class="social-icon"><Icon icon="mdi:github" width="24" /></a>
+                <a href="#" class="social-icon"><Icon icon="mdi:linkedin" width="24" /></a>
+                <a href="#" class="social-icon"><Icon icon="mdi:twitter" width="24" /></a>
+              </div>
+            </div>
+          </div>
         </footer>
-      </main>
-    </div>
-  </transition>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script>
-import ThreeBackground from './components/ThreeBackground.vue';
-import EntryScreen from './components/EntryScreen.vue';
 import NavBar from './components/NavBar.vue';
 import BioSection from './components/BioSection.vue';
 import SkillsSection from './components/SkillsSection.vue';
 import PortfolioGallery from './components/PortfolioGallery.vue';
+import EntryScreen from './components/EntryScreen.vue';
+import ParticlesBackground from './components/ParticlesBackground.vue';
 import { Icon } from '@iconify/vue';
 
 export default {
   name: 'App',
   components: {
-    ThreeBackground,
-    EntryScreen,
     NavBar,
     BioSection,
     SkillsSection,
     PortfolioGallery,
+    EntryScreen,
+    ParticlesBackground,
     Icon
   },
   data() {
     return {
-      entered: false,
-      activeSection: 'about'
-    };
-  },
-  mounted() {
-    // Check if user has already entered in this session (optional, skipping for now)
-    window.addEventListener('scroll', this.onScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener('scroll', this.onScroll);
+      entered: false
+    }
   },
   methods: {
-    startExperience() {
+    handleEnter() {
       this.entered = true;
-      // Play sound here
-    },
-    scrollToSection(id) {
-      this.activeSection = id;
-    },
-    onScroll() {
-      const sections = ['about', 'skills', 'portfolio', 'contact'];
-      for (const section of sections) {
-        const el = this.$refs[section];
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 300 && rect.bottom >= 300) {
-            this.activeSection = section;
-          }
-        }
-      }
+      // Smooth scroll to top after entry
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
   }
 }
 </script>
 
 <style lang="scss">
-/* Layout */
-.app-layout {
-  display: flex;
+@import './style.scss';
+
+.app-container {
+  position: relative;
   min-height: 100vh;
 }
 
-.main-content {
-  flex: 1;
-  margin-left: 0;
-  transition: margin-left 0.3s ease;
-  
-  @media (min-width: 1024px) {
-    margin-left: 280px;
-  }
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  animation: fadeIn 1s ease-out;
 }
 
-.page-section {
-  min-height: 100vh;
-  padding: 6rem 0;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.section-heading {
-  margin-bottom: 3rem;
-  
-  .line-dec {
-    width: 60px;
-    height: 3px;
-    background: var(--secondary);
-    margin: 1rem 0;
-  }
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.contact-card {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  transition: all 0.3s ease;
-  color: var(--text-light);
-  text-align: center;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--primary);
-    transform: translateY(-5px);
-  }
-}
-
-.resume-links {
-  text-align: center;
-}
-
-.site-footer {
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.875rem;
+.main-footer {
+  padding: 4rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  margin-top: 4rem;
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+    
+    .social-icon {
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+      
+      &:hover {
+        color: var(--primary);
+        transform: translateY(-3px);
+      }
+    }
+  }
 }
 
-.fade-app-enter-active {
-  transition: opacity 1s ease;
-}
-.fade-app-enter-from {
-  opacity: 0;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

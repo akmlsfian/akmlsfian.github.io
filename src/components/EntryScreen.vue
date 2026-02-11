@@ -2,9 +2,11 @@
   <transition name="explode">
     <div v-if="visible" class="entry-screen" @click="enter">
       <div class="content">
-        <h1 class="title">Akmal Sufian</h1>
+        <h1 class="title">akmlsfian</h1>
         <p class="subtitle">Software Programmer & Web Developer</p>
-        <div class="hint">Click anywhere to start</div>
+        <div class="hint">
+          <span class="click-text">Click to initialize</span>
+        </div>
       </div>
     </div>
   </transition>
@@ -32,62 +34,88 @@ export default {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(15, 23, 42, 0.98);
+  background: rgba(15, 23, 42, 0.85); /* Slightly more transparent */
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   backdrop-filter: blur(20px);
+  overflow: hidden;
 }
 
 .content {
   text-align: center;
   color: var(--text-light);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.2s ease;
 }
 
 .title {
-  font-size: clamp(3rem, 6vw, 6rem);
-  font-weight: 900;
-  letter-spacing: -2px;
-  background: linear-gradient(135deg, var(--primary) 0%, #fff 100%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 700;
+  letter-spacing: -4px;
+  background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-  animation: pulse 3s infinite ease-in-out;
+  margin-bottom: 0.5rem;
+  /* Modern glow */
+  text-shadow: 0 0 30px rgba(43, 241, 255, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    text-shadow: 0 0 50px rgba(43, 241, 255, 0.6);
+    letter-spacing: -2px; /* Expand slightly */
+  }
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.875rem, 1.5vw, 1.25rem);
   color: var(--text-muted);
-  letter-spacing: 2px;
+  letter-spacing: 4px;
   text-transform: uppercase;
+  font-weight: 300;
 }
 
 .hint {
-  margin-top: 3rem;
-  font-size: 0.875rem;
-  opacity: 0.6;
-  animation: blink 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(43, 241, 255, 0.2)); }
-  50% { transform: scale(1.02); filter: drop-shadow(0 0 20px rgba(43, 241, 255, 0.5)); }
+  margin-top: 4rem;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--primary);
+  opacity: 0.7;
+  
+  .click-text {
+    border: 1px solid rgba(43, 241, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    background: rgba(43, 241, 255, 0.05);
+    animation: blink 2s infinite;
+  }
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 0 rgba(43, 241, 255, 0); }
+  50% { opacity: 1; box-shadow: 0 0 10px rgba(43, 241, 255, 0.3); }
 }
 
-/* Transition Effects */
+/* EXPLOSION Transition Effects */
 .explode-leave-active {
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .explode-leave-to {
-  transform: scale(1.5);
   opacity: 0;
+  filter: blur(20px);
+  /* The explosion: Scale up massively */
+  transform: scale(3); 
+}
+
+.explode-leave-to .title {
+  /* Extra burst for title */
+  letter-spacing: 50px;
   filter: blur(10px);
 }
 </style>

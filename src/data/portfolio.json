@@ -1,66 +1,92 @@
 [
   {
     "id": 1,
-    "title": "Statistic Dashboard (View 1)",
-    "category": "career",
-    "tech": "Laravel",
-    "description": "In-house Web Application dashboard showing statistics retrieved from SQL.",
-    "image": "/images/portfolio/atlas-dashboard-1.png"
+    "title": "AskCPG (Clinical Practice Guidelines AI)",
+    "category": "Medical AI",
+    "tech": "Vue.js",
+    "technologies": ["Vue.js", "Python", "AI Integration", "Tailwind CSS"],
+    "description": "An AI-powered assistant for Malaysian Clinical Practice Guidelines (CPG), similar to ChatGPT but specialized for medical contexts. Supports both text and image inputs to provide accurate clinical guidance.",
+    "image": "/images/portfolio/AskCPG/page.png",
+    "gallery": [
+      "/images/portfolio/AskCPG/page.png",
+      "/images/portfolio/AskCPG/Screenshot 2026-02-11 175923.png"
+    ],
+    "link": "https://cpg.qmed.ai"
   },
   {
     "id": 2,
-    "title": "Statistic Dashboard (View 2)",
-    "category": "career",
-    "tech": "Laravel",
-    "description": "Another view of the In-house Web Application dashboard.",
-    "image": "/images/portfolio/atlas-dashboard-2.png"
+    "title": "DrMata (Diabetic Retinopathy AI)",
+    "category": "Medical IoT",
+    "tech": "IoT & AI",
+    "technologies": ["IoT Gateway", "AI Vision", "Fundus Camera Integration", "WebApp"],
+    "description": "A collaboration with the Ministry of Health Malaysia (KKM). An integrated web application connecting gateway devices with fundus cameras, powered by AI to detect diabetic retinopathy from retinal scans in real-time.",
+    "image": "/images/portfolio/Drmata/retina viewer.png",
+    "gallery": [
+      "/images/portfolio/Drmata/retina viewer.png",
+      "/images/portfolio/Drmata/drmata session.png"
+    ],
+    "link": null
   },
   {
     "id": 3,
-    "title": "SQL to S3 Buckets",
-    "category": "career",
-    "tech": "Laravel",
-    "description": "Module to Create/Edit Landing Page templates, assigning HTML/JS/CSS to S3 buckets.",
-    "image": "/images/portfolio/atlas-lp.png"
+    "title": "NoraKPJ (Triage Assistant)",
+    "category": "Medical Workflow",
+    "tech": "WebApp",
+    "technologies": ["Vue.js", "Mobile First Design", "API Integration"],
+    "description": "A dedicated triage web application assisting medical staff in streamlining patient workflow. Originally a standalone app, now fully integrated into the KPJ Healthcare ecosystem.",
+    "image": "/images/portfolio/norakpj/startpage.png",
+    "gallery": [
+      "/images/portfolio/norakpj/startpage.png",
+      "/images/portfolio/norakpj/symptom checker.png"
+    ],
+    "link": "https://nora.qmed.ai/"
   },
   {
     "id": 4,
-    "title": "S3 Bucket File List",
-    "category": "career",
-    "tech": "Laravel",
-    "description": "Module to find HTML/JS/CSS files stored in S3 buckets without accessing AWS directly.",
-    "image": "/images/portfolio/atlas-s3-table.png"
+    "title": "QmedScribe (Medical Scribing)",
+    "category": "SaaS",
+    "tech": "Audio AI",
+    "technologies": ["Speech-to-Text", "Audio Processing", "Vue.js", "Laravel"],
+    "description": "A subscription-based medical scribing solution for Malaysia. Facilitates documentation for triage, emergency departments, and general consultations between doctors and patients.",
+    "image": "/images/portfolio/qmedScribe/home page.png",
+    "gallery": [
+      "/images/portfolio/qmedScribe/home page.png",
+      "/images/portfolio/qmedScribe/audio panel.png",
+      "/images/portfolio/qmedScribe/result.png",
+      "/images/portfolio/qmedScribe/template.png"
+    ],
+    "link": "https://scribe.qmed.ai"
   },
   {
     "id": 5,
-    "title": "Edit S3 Files",
-    "category": "career",
+    "title": "Atlas Legacy CMS",
+    "category": "Career",
     "tech": "Laravel",
-    "description": "Module to edit HTML/JS/CSS files stored in S3 buckets.",
-    "image": "/images/portfolio/atlas-s3-edit.png"
+    "technologies": ["Laravel", "SQL", "AWS S3", "DynamoDB"],
+    "description": "A comprehensive Content Management System for VAS business landing pages. Features include S3 bucket management, DynamoDB data retrieval, and real-time dashboard statistics.",
+    "image": "/images/portfolio/atlas_legacy/atlas-dashboard-1.png",
+    "gallery": [
+      "/images/portfolio/atlas_legacy/atlas-dashboard-1.png",
+      "/images/portfolio/atlas_legacy/atlas-dashboard-2.png",
+      "/images/portfolio/atlas_legacy/atlas-lp.png",
+      "/images/portfolio/atlas_legacy/atlas-s3-edit.png",
+      "/images/portfolio/atlas_legacy/atlas-s3-table.png",
+      "/images/portfolio/atlas_legacy/atlas-scrub.png"
+    ],
+    "link": null
   },
   {
     "id": 6,
-    "title": "DynamoDB Data Retrieval",
-    "category": "career",
-    "tech": "Laravel",
-    "description": "Module to retrieve data based on filters from DynamoDB using API.",
-    "image": "/images/portfolio/atlas-scrub.png"
-  },
-  {
-    "id": 7,
-    "title": "UiTM Events Static Page",
-    "category": "freelance",
+    "title": "UiTM Events Portal",
+    "category": "Freelance",
     "tech": "Static HTML",
-    "description": "Outsource project for UiTM events using low budget without database server.",
-    "image": "/images/portfolio/mdit-3.png"
-  },
-  {
-    "id": 8,
-    "title": "UiTM Events Mobile View",
-    "category": "freelance",
-    "tech": "Static HTML",
-    "description": "Mobile view of the UiTM events static page.",
-    "image": "/images/portfolio/mdit-2-mobile.png"
+    "technologies": ["HTML5", "CSS3", "JavaScript", "Responsive Design"],
+    "description": "A budget-optimized event portal for UiTM, built with static technologies for high performance and zero server maintenance costs.",
+    "image": "/images/portfolio/mdit-3.png",
+    "gallery": [
+      "/images/portfolio/mdit-3.png",
+      "/images/portfolio/mdit-2-mobile.png"
+    ],
+    "link": null
   }
 ]
