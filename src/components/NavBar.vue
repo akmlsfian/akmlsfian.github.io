@@ -94,31 +94,35 @@ export default {
   top: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
-  max-width: 1200px;
+  width: calc(100% - 3rem); /* Matches container padding roughly */
+  max-width: 1400px; /* Aligns with main content */
   z-index: 1000;
-  padding: 0.75rem 1.5rem;
-  transition: all 0.3s var(--ease-out-expo);
-  border-radius: 99px;
-  
+  padding: 0.75rem 2rem; /* Match container padding */
+  transition: all 0.3s var(--ease-in-out);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.6); /* Darker initial state */
+
   &.scrolled {
-    background: rgba(15, 23, 42, 0.9);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    padding: 0.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.85);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: 0.75rem 2rem;
   }
-  
+
   @media (max-width: 768px) {
-    width: 95%;
     top: 1rem;
-    padding: 0.75rem 1rem;
+    width: calc(100% - 2rem);
+    padding: 0.75rem 1.5rem;
   }
 }
 
 .nav-container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 !important; /* Override container padding */
+  align-items: center;
+  width: 100%;
+  padding: 0; /* Container padding handled by navbar */
+  max-width: none; /* Let navbar handle width */
 }
 
 .logo {

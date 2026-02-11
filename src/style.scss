@@ -1,10 +1,10 @@
 /* Variables */
-$primary: #2bf1ff;
-$secondary: #a43f49;
-$bg-dark: #0f172a;
-$bg-card: #1e293b;
-$text-light: #f8fafc;
-$text-muted: #94a3b8;
+$primary: #00f0ff; /* Super Bright Neon Cyan */
+$secondary: #ff0055; /* Deep Neon Pink */
+$bg-dark: #000000; /* Pitch Black */
+$bg-card: #050505; /* Almost Black */
+$text-light: #ffffff;
+$text-muted: #9ca3af;
 
 :root {
   --primary: #{$primary};
@@ -15,10 +15,11 @@ $text-muted: #94a3b8;
   --text-muted: #{$text-muted};
   
   /* Modern Tokens */
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --neon-shadow: 0 0 10px rgba(43, 241, 255, 0.5), 0 0 20px rgba(43, 241, 255, 0.3);
+  --glass-bg: rgba(5, 5, 5, 0.7);
+  --glass-border: rgba(0, 240, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --neon-shadow: 0 0 15px rgba(0, 240, 255, 0.4), 0 0 30px rgba(0, 240, 255, 0.2);
+  --neon-box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
   
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -33,6 +34,9 @@ body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: $bg-dark;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.08), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(255, 0, 85, 0.05), transparent 25%);
   color: $text-light;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

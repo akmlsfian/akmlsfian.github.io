@@ -24,19 +24,12 @@
             <PortfolioGallery />
           </div>
         </section>
-        
-        <footer class="main-footer">
+
+        <section id="contact" class="page-section">
           <div class="container">
-            <div class="footer-content">
-              <p>&copy; {{ new Date().getFullYear() }} akmlsfian. All rights reserved.</p>
-              <div class="social-links">
-                <a href="#" class="social-icon"><Icon icon="mdi:github" width="24" /></a>
-                <a href="#" class="social-icon"><Icon icon="mdi:linkedin" width="24" /></a>
-                <a href="#" class="social-icon"><Icon icon="mdi:twitter" width="24" /></a>
-              </div>
-            </div>
+            <ContactSection />
           </div>
-        </footer>
+        </section>
       </div>
     </main>
   </div>
@@ -47,6 +40,7 @@ import NavBar from './components/NavBar.vue';
 import BioSection from './components/BioSection.vue';
 import SkillsSection from './components/SkillsSection.vue';
 import PortfolioGallery from './components/PortfolioGallery.vue';
+import ContactSection from './components/ContactSection.vue';
 import EntryScreen from './components/EntryScreen.vue';
 import ParticlesBackground from './components/ParticlesBackground.vue';
 import { Icon } from '@iconify/vue';
@@ -58,6 +52,7 @@ export default {
     BioSection,
     SkillsSection,
     PortfolioGallery,
+    ContactSection,
     EntryScreen,
     ParticlesBackground,
     Icon

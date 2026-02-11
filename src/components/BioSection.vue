@@ -1,40 +1,62 @@
 <template>
-  <div class="bio-wrapper">
-    <div class="bio-content">
-      <div class="section-heading">
-        <h2 class="gradient-text">About Me</h2>
-        <div class="line-dec"></div>
-      </div>
-      
-      <div class="bio-text glass-panel">
-        <p v-html="bio.about"></p>
-        <div class="divider"></div>
-        <h3 class="sub-heading">My Journey</h3>
-        <p>{{ bio.background }}</p>
-      </div>
-      
-      <div class="action-area">
-        <a href="#contact" class="btn btn-primary">Let's Connect</a>
-      </div>
+  <div class="bio-section">
+    <div class="section-header">
+      <h2 class="neon-text">About <span class="text-white">Me</span></h2>
+      <div class="scanner-line"></div>
     </div>
-
-    <div class="traits-wrapper">
-      <div class="traits-grid">
+    
+    <div class="bio-grid">
+      <!-- Profile Card -->
+      <div class="profile-card glass-panel slide-in-left">
+        <div class="image-wrapper">
+          <div class="hex-frame">
+            <img src="/images/me.jpg" alt="Akmal Sufian" class="profile-img" />
+          </div>
+          <div class="status-indicator">
+            <span class="dot"></span> Online
+          </div>
+        </div>
+        
+        <div class="bio-content">
+          <h3 class="name-title">Akmal Sufian</h3>
+          <p class="role-subtitle">Software Craftsman</p>
+          
+          <div class="bio-body" v-html="bio.about"></div>
+          
+          <div class="journey-box">
+            <h4><Icon icon="mdi:map-marker-path" /> My Journey</h4>
+            <p>{{ bio.background }}</p>
+          </div>
+          
+          <div class="action-row">
+            <a href="#contact" class="btn btn-neon">
+              <Icon icon="mdi:flash" /> Initialize Contact
+            </a>
+            <!-- <a href="/resume.pdf" target="_blank" class="btn btn-outline">
+              <Icon icon="mdi:file-document-outline" /> Resume
+            </a> -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Traits Grid -->
+      <div class="traits-container">
         <div 
           v-for="(trait, index) in bio.traits" 
           :key="trait.title" 
-          class="trait-card glass-panel"
+          class="trait-module glass-panel"
           :style="{ animationDelay: `${index * 0.1}s` }"
         >
-          <div class="icon-box">
-            <Icon v-if="trait.title.includes('Leader')" icon="mdi:account-group-outline" width="32" />
-            <Icon v-else-if="trait.title.includes('Fast')" icon="mdi:rocket-launch-outline" width="32" />
-            <Icon v-else icon="mdi:brain" width="32" />
-          </div>
-          <div class="trait-content">
+          <div class="module-header">
+            <div class="icon-frame">
+              <Icon v-if="trait.title.includes('Leader')" icon="mdi:account-group" />
+              <Icon v-else-if="trait.title.includes('Fast')" icon="mdi:rocket-launch" />
+              <Icon v-else icon="mdi:brain" />
+            </div>
             <h4>{{ trait.title }}</h4>
-            <p>{{ trait.description }}</p>
           </div>
+          <p>{{ trait.description }}</p>
+          <div class="corner-accents"></div>
         </div>
       </div>
     </div>
@@ -57,41 +79,52 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bio-wrapper {
+.bio-section {
+  padding: 2rem 0;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  position: relative;
+  display: inline-block;
+  
+  .neon-text {
+    font-size: 3rem;
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    margin: 0;
+    
+    .text-white {
+      color: #fff;
+      text-shadow: none;
+    }
+  }
+  
+  .scanner-line {
+    width: 100%;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+    margin-top: 0.5rem;
+    animation: scan 2s infinite alternate;
+  }
+}
+
+.bio-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
   align-items: start;
   
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
-    gap: 3rem;
   }
 }
 
-.section-heading {
-  margin-bottom: 2rem;
-  
-  .gradient-text {
-    background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-  }
-  
-  .line-dec {
-    width: 80px;
-    height: 4px;
-    background: var(--primary);
-    margin-top: 0.5rem;
-    border-radius: 2px;
-    box-shadow: 0 0 10px rgba(43, 241, 255, 0.4);
-  }
-}
-
-.bio-text {
-  padding: 2.5rem;
-  margin-bottom: 2rem;
+.profile-card {
+  padding: 3rem;
+  display: flex;
+  gap: 3rem;
   position: relative;
   overflow: hidden;
   
@@ -100,93 +133,254 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--primary);
-    opacity: 0.5;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
   }
   
-  p {
-    margin-bottom: 0;
-  }
-  
-  .divider {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 2rem 0;
-  }
-  
-  .sub-heading {
-    color: var(--primary);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
   }
 }
 
-.traits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.trait-card {
-  padding: 2rem;
-  transition: all 0.4s var(--ease-out-expo);
+.image-wrapper {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+  gap: 1rem;
   
-  &:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: var(--primary);
-    box-shadow: 0 10px 40px -10px rgba(43, 241, 255, 0.15);
+  .hex-frame {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+    background: #000;
+    padding: 4px;
     
-    .icon-box {
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, var(--primary), transparent);
+      z-index: -1;
+    }
+    
+    .profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+      filter: grayscale(20%) contrast(1.1);
+      transition: all 0.5s ease;
+    }
+    
+    &:hover .profile-img {
+      filter: grayscale(0) contrast(1);
+      transform: scale(1.05);
+    }
+  }
+  
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--primary);
+    background: rgba(0, 240, 255, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    
+    .dot {
+      width: 8px;
+      height: 8px;
       background: var(--primary);
-      color: var(--bg-dark);
-      transform: rotateY(180deg);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--primary);
+      animation: pulse 2s infinite;
     }
   }
 }
 
-.icon-box {
-  width: 56px;
-  height: 56px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  font-size: 1.5rem;
-  transition: all 0.5s var(--ease-out-expo);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.bio-content {
+  flex: 1;
+  
+  .name-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(90deg, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .role-subtitle {
+    font-family: 'Space Mono', monospace;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .bio-body {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  
+  .journey-box {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 3px solid var(--secondary);
+    margin-bottom: 2rem;
+    
+    h4 {
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+  }
+  
+  .action-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+    }
+    
+    .btn-neon {
+      background: var(--primary);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+      
+      &:hover {
+        background: #fff;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      }
+    }
+    
+    .btn-outline {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      
+      &:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(0, 240, 255, 0.05);
+      }
+    }
+  }
 }
 
-.trait-content {
-  h4 {
-    color: var(--text-light);
-    margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+.traits-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.trait-module {
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  
+  &:hover {
+    transform: translateX(10px);
+    border-color: var(--primary);
+    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+    
+    .icon-frame {
+      color: var(--bg-dark);
+      background: var(--primary);
+      box-shadow: 0 0 15px var(--primary);
+    }
+  }
+  
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    
+    .icon-frame {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.25rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
   }
   
   p {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
     margin: 0;
-    opacity: 0.8;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  
+  .corner-accents {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-top: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+    opacity: 0.5;
   }
 }
 
-/* Animations */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes scan {
+  from { width: 0; opacity: 0; }
+  to { width: 100%; opacity: 1; }
 }
 
-.trait-card {
-  animation: slideUp 0.8s var(--ease-out-expo) backwards;
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+}
+
+.slide-in-left {
+  animation: slideInLeft 1s var(--ease-out-expo) backwards;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 </style>
