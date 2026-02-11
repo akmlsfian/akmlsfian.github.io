@@ -1,12 +1,14 @@
 {
   "name": "Akmal Sufian",
-  "title": "Software Programmer",
-  "subtitle": "Web Developer",
-  "dob": "2000-11-06",
-  "location": "Kuala Lumpur, Malaysia",
-  "education": {
-    "degree": "Diploma in Computer Science",
-    "gpa": "3.12"
+  "title": "Software Craftsman",
+  "subtitle": "Full Stack Developer",
+  "personalInfo": {
+    "fullName": "Mohamad Akmal Bin Mohamad Sufian",
+    "nickname": "Mal",
+    "birthDate": "2000-11-06",
+    "birthPlace": "Sungai Petani, Kedah",
+    "currentLocation": "Seri Kembangan",
+    "careerStartDate": "2022-11-21"
   },
   "contact": {
     "email": "akmalsir46@gmail.com",
@@ -15,20 +17,22 @@
     "github": "https://github.com/akmlsfian",
     "whatsapp": "https://wa.me/60194320001?text=Hi, I am interested in your portfolio! May we connect?"
   },
-  "about": "Hi, my full name is Mohamad Akmal Bin Mohamad Sufian. I am 26 years old, Born on 6th November 2000 in Sungai Petani Kedah, now Living in Kuala Lumpur. Diploma in Computer Science with GPA 3.12. Passionate about building web and apps. Software Programmer with 3.4+ years of experience since 21st Nov as Junior Software Programmer. Proficient in coding languages such as PHP Laravel, Javascript (NodeJS, VueJS). Always like to approach new tech and knowledge as I grow.",
   "background": "I am the eldest son in my family with one younger sibling. My formative years were shaped by my divorced mother and later, a stepmother, following my father's passing. You may be thinking on why i did not pursue Degree in Computer Science right? That is because my academic pursuits were cut short before I could embark on a degree, due to my father's untimely death and financial constraints. Committed to staying debt-free and avoiding student loans, I am now intent on utilizing my diploma to find employment in the computer science industry. My resilience and pragmatic approach to overcoming life's challenges highlight my readiness to make a meaningful contribution to the workforce.",
   "traits": [
     {
-      "title": "Leader Attitude",
-      "description": "I'm committed to fostering an environment where everyone feels empowered and respected. My approach involves active listening, clear communication, and a dedication to collective growth."
+      "title": "Hyper-Focused",
+      "icon": "mdi:lightning-bolt",
+      "description": "When I lock onto a problem, I enter a state of deep flow. I don't just solve issues; I dismantle them until I understand every gear and cog."
     },
     {
-      "title": "Fast Learner",
-      "description": "My quick learning ability is one of my standout traits. In just 3+ years of working, I've absorbed new skills and adapted to various environments with agility."
+      "title": "Rapid Adapter",
+      "icon": "mdi:rocket-launch",
+      "description": "I thrive in chaos. New stack? New framework? Give me a weekend and I'll not only learn it but find the best practices you missed."
     },
     {
-      "title": "Critical Thinker",
-      "description": "My critical thinking skills are a cornerstone of my professional approach. With a keen eye for detail and a methodical thought process, I excel at analyzing situations."
+      "title": "Pattern Recognizer",
+      "icon": "mdi:brain",
+      "description": "I see connections others miss. My mind constantly maps complex systems, allowing me to predict bottlenecks before they even appear."
     }
   ]
 }

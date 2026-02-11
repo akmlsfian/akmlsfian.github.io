@@ -18,6 +18,15 @@
     ]
   },
   {
+    "category": "DevOps & Infrastructure",
+    "skills": [
+      { "name": "Linux Integration", "level": 80 },
+      { "name": "Docker Setup", "level": 75 },
+      { "name": "Server Installation", "level": 85 },
+      { "name": "CI/CD Pipelines", "level": 70 }
+    ]
+  },
+  {
     "category": "Database",
     "skills": [
       { "name": "MySQL", "level": 80 }

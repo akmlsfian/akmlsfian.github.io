@@ -18,10 +18,36 @@
         </div>
         
         <div class="bio-content">
-          <h3 class="name-title">Akmal Sufian</h3>
-          <p class="role-subtitle">Software Craftsman</p>
+          <h3 class="name-title">{{ bio.name }}</h3>
+          <p class="role-subtitle">{{ bio.title }}</p>
           
-          <div class="bio-body" v-html="bio.about"></div>
+          <!-- Character Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Subject ID</span>
+              <span class="stat-value">{{ bio.personalInfo.fullName }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Alias</span>
+              <span class="stat-value text-primary">"{{ bio.personalInfo.nickname }}"</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Origin</span>
+              <span class="stat-value">{{ bio.personalInfo.birthPlace }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Current Location</span>
+              <span class="stat-value">{{ bio.personalInfo.currentLocation }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Age</span>
+              <span class="stat-value">{{ age }} <span class="stat-sub">Levels</span></span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Experience</span>
+              <span class="stat-value">{{ yearsOfExperience }} <span class="stat-sub">Years</span></span>
+            </div>
+          </div>
           
           <div class="journey-box">
             <h4><Icon icon="mdi:map-marker-path" /> My Journey</h4>
@@ -32,9 +58,6 @@
             <a href="#contact" class="btn btn-neon">
               <Icon icon="mdi:flash" /> Initialize Contact
             </a>
-            <!-- <a href="/resume.pdf" target="_blank" class="btn btn-outline">
-              <Icon icon="mdi:file-document-outline" /> Resume
-            </a> -->
           </div>
         </div>
       </div>
@@ -49,9 +72,7 @@
         >
           <div class="module-header">
             <div class="icon-frame">
-              <Icon v-if="trait.title.includes('Leader')" icon="mdi:account-group" />
-              <Icon v-else-if="trait.title.includes('Fast')" icon="mdi:rocket-launch" />
-              <Icon v-else icon="mdi:brain" />
+              <Icon :icon="trait.icon" />
             </div>
             <h4>{{ trait.title }}</h4>
           </div>
@@ -74,6 +95,36 @@ export default {
     return {
       bio: bioData
     };
+  },
+  computed: {
+    age() {
+      if (!this.bio.personalInfo?.birthDate) return 'Unknown';
+      const birthDate = new Date(this.bio.personalInfo.birthDate);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    },
+    yearsOfExperience() {
+      if (!this.bio.personalInfo?.careerStartDate) return 'Unknown';
+      const startDate = new Date(this.bio.personalInfo.careerStartDate);
+      const today = new Date();
+      
+      let years = today.getFullYear() - startDate.getFullYear();
+      const m = today.getMonth() - startDate.getMonth();
+      
+      // Calculate precise decimal for "3.4+" style if desired, or just years
+      // User asked for "Year of Experience in the field: {follow the career started date up to now}"
+      // Let's do a precise "2.5+" or "3+" style or just text
+      // Let's return a formatted string like "3+" or "2.5"
+      
+      const diffTime = Math.abs(today - startDate);
+      const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25); 
+      return diffYears.toFixed(1) + '+';
+    }
   }
 }
 </script>
@@ -221,6 +272,58 @@ export default {
     color: var(--primary);
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+    
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-left-color: var(--primary);
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.1) 0%, transparent 100%);
+      transform: translateX(5px);
+    }
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    font-weight: 600;
+    
+    &.text-primary {
+      color: var(--primary);
+    }
+    
+    .stat-sub {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 400;
+    }
   }
   
   .bio-body {
