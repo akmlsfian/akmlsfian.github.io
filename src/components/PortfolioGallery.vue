@@ -212,11 +212,12 @@ export default {
 
 .project-card {
   overflow: hidden;
-  transition: all 0.4s var(--ease-out-expo);
+  transition: transform 0.4s var(--ease-out-expo), border-color 0.4s ease, box-shadow 0.4s ease;
   border: 1px solid rgba(255, 255, 255, 0.05);
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  will-change: transform;
   
   &:hover {
     transform: translateY(-8px);
@@ -243,11 +244,13 @@ export default {
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s var(--ease-out-expo);
+    will-change: transform;
+    backface-visibility: hidden;
   }
   
   img.blurred-backdrop {
     filter: blur(3px) brightness(0.5);
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(0); /* Force hardware acceleration */
   }
 
   .center-icon-wrapper {
@@ -258,13 +261,16 @@ export default {
     width: 300px;
     height: 300px;
     z-index: 10;
+    /* Use a simpler shadow if possible, or keep drop-shadow but hardware accelerate */
     filter: drop-shadow(0 4px 15px rgba(0, 240, 255, 0.3));
+    will-change: transform;
     
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
     }
   }
 
