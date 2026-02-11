@@ -7,6 +7,7 @@
     "technologies": ["Vue.js", "Python", "AI Integration", "Tailwind CSS"],
     "description": "An AI-powered assistant for Malaysian Clinical Practice Guidelines (CPG), similar to ChatGPT but specialized for medical contexts. Supports both text and image inputs to provide accurate clinical guidance.",
     "image": "/images/portfolio/AskCPG/page.png",
+    "icon": "/images/portfolio/AskCPG/icon.png",
     "gallery": [
       "/images/portfolio/AskCPG/page.png",
       "/images/portfolio/AskCPG/Screenshot 2026-02-11 175923.png"
@@ -21,6 +22,7 @@
     "technologies": ["IoT Gateway", "AI Vision", "Fundus Camera Integration", "WebApp"],
     "description": "A collaboration with the Ministry of Health Malaysia (KKM). An integrated web application connecting gateway devices with fundus cameras, powered by AI to detect diabetic retinopathy from retinal scans in real-time.",
     "image": "/images/portfolio/Drmata/retina viewer.png",
+    "icon": "/images/portfolio/Drmata/icon.png",
     "gallery": [
       "/images/portfolio/Drmata/retina viewer.png",
       "/images/portfolio/Drmata/drmata session.png"
@@ -35,6 +37,7 @@
     "technologies": ["Vue.js", "Mobile First Design", "API Integration"],
     "description": "A dedicated triage web application assisting medical staff in streamlining patient workflow. Originally a standalone app, now fully integrated into the KPJ Healthcare ecosystem.",
     "image": "/images/portfolio/norakpj/startpage.png",
+    "icon": "/images/portfolio/norakpj/icon.png",
     "gallery": [
       "/images/portfolio/norakpj/startpage.png",
       "/images/portfolio/norakpj/symptom checker.png"
@@ -49,6 +52,7 @@
     "technologies": ["Speech-to-Text", "Audio Processing", "Vue.js", "Laravel"],
     "description": "A subscription-based medical scribing solution for Malaysia. Facilitates documentation for triage, emergency departments, and general consultations between doctors and patients.",
     "image": "/images/portfolio/qmedScribe/home page.png",
+    "icon": "/images/portfolio/qmedScribe/icon.png",
     "gallery": [
       "/images/portfolio/qmedScribe/home page.png",
       "/images/portfolio/qmedScribe/audio panel.png",

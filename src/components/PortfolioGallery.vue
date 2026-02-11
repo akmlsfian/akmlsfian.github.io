@@ -16,6 +16,12 @@
       >
         <div class="image-wrapper">
           <img :src="project.image" :alt="project.title" loading="lazy" />
+          
+          <!-- Project Icon Overlay -->
+          <div v-if="project.icon" class="project-icon-overlay">
+            <img :src="project.icon" :alt="project.title + ' icon'" />
+          </div>
+
           <div class="overlay">
             <div class="overlay-content">
               <Icon icon="mdi:eye-outline" width="48" />
@@ -232,6 +238,29 @@ export default {
     height: 100%;
     object-fit: cover;
     transition: transform 0.6s var(--ease-out-expo);
+  }
+
+  .project-icon-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 0;
+      transition: none; /* Don't scale icon on hover */
+    }
   }
 }
 
