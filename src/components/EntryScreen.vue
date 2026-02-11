@@ -2,7 +2,7 @@
   <transition name="explode">
     <div v-if="visible" class="entry-screen" @click="enter">
       <div class="content">
-        <h1 class="title">akmlsfian</h1>
+        <h1 class="title">{{ displayedTitle }}</h1>
         <p class="subtitle">Software Programmer & Web Developer</p>
         <div class="hint">
           <span class="click-text">Click to initialize</span>
@@ -17,13 +17,50 @@ export default {
   name: 'EntryScreen',
   data() {
     return {
-      visible: true
+      visible: true,
+      originalText: 'akmlsfian',
+      displayedTitle: '', // Start empty or random
+      interval: null
     };
+  },
+  mounted() {
+    this.startHackerEffect();
+  },
+  beforeUnmount() {
+    if (this.interval) clearInterval(this.interval);
   },
   methods: {
     enter() {
       this.visible = false;
       this.$emit('enter');
+    },
+    startHackerEffect() {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let iteration = 0;
+      
+      // Initialize with random characters immediately to prevent empty flash
+      this.displayedTitle = this.originalText.split("")
+        .map(() => letters[Math.floor(Math.random() * letters.length)])
+        .join("");
+
+      this.interval = setInterval(() => {
+        this.displayedTitle = this.originalText
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) {
+              return this.originalText[index];
+            }
+            return letters[Math.floor(Math.random() * letters.length)];
+          })
+          .join("");
+        
+        if (iteration >= this.originalText.length) { 
+          clearInterval(this.interval);
+          this.displayedTitle = this.originalText; // Ensure clean final state
+        }
+        
+        iteration += 1 / 3; // Resolve 1 character every 3 frames
+      }, 50); // 50ms per frame
     }
   }
 }
