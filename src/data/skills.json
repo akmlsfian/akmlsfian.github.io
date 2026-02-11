@@ -1,0 +1,26 @@
+[
+  {
+    "category": "Backend",
+    "skills": [
+      { "name": "PHP Laravel", "level": 90 },
+      { "name": "NodeJS", "level": 75 },
+      { "name": "Python", "level": 60 },
+      { "name": "Java", "level": 60 },
+      { "name": "C++", "level": 50 }
+    ]
+  },
+  {
+    "category": "Frontend",
+    "skills": [
+      { "name": "VueJS", "level": 85 },
+      { "name": "HTML", "level": 95 },
+      { "name": "CSS", "level": 85 }
+    ]
+  },
+  {
+    "category": "Database",
+    "skills": [
+      { "name": "MySQL", "level": 80 }
+    ]
+  }
+]

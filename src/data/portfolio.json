@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "title": "Statistic Dashboard (View 1)",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "In-house Web Application dashboard showing statistics retrieved from SQL.",
+    "image": "/images/portfolio/atlas-dashboard-1.png"
+  },
+  {
+    "id": 2,
+    "title": "Statistic Dashboard (View 2)",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "Another view of the In-house Web Application dashboard.",
+    "image": "/images/portfolio/atlas-dashboard-2.png"
+  },
+  {
+    "id": 3,
+    "title": "SQL to S3 Buckets",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "Module to Create/Edit Landing Page templates, assigning HTML/JS/CSS to S3 buckets.",
+    "image": "/images/portfolio/atlas-lp.png"
+  },
+  {
+    "id": 4,
+    "title": "S3 Bucket File List",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "Module to find HTML/JS/CSS files stored in S3 buckets without accessing AWS directly.",
+    "image": "/images/portfolio/atlas-s3-table.png"
+  },
+  {
+    "id": 5,
+    "title": "Edit S3 Files",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "Module to edit HTML/JS/CSS files stored in S3 buckets.",
+    "image": "/images/portfolio/atlas-s3-edit.png"
+  },
+  {
+    "id": 6,
+    "title": "DynamoDB Data Retrieval",
+    "category": "career",
+    "tech": "Laravel",
+    "description": "Module to retrieve data based on filters from DynamoDB using API.",
+    "image": "/images/portfolio/atlas-scrub.png"
+  },
+  {
+    "id": 7,
+    "title": "UiTM Events Static Page",
+    "category": "freelance",
+    "tech": "Static HTML",
+    "description": "Outsource project for UiTM events using low budget without database server.",
+    "image": "/images/portfolio/mdit-3.png"
+  },
+  {
+    "id": 8,
+    "title": "UiTM Events Mobile View",
+    "category": "freelance",
+    "tech": "Static HTML",
+    "description": "Mobile view of the UiTM events static page.",
+    "image": "/images/portfolio/mdit-2-mobile.png"
+  }
+]
