@@ -255,8 +255,8 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 150px;
-    height: 150px;
+    width: 300px;
+    height: 300px;
     z-index: 10;
     filter: drop-shadow(0 4px 15px rgba(0, 240, 255, 0.3));
     
