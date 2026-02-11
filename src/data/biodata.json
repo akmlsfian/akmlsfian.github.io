@@ -20,6 +20,11 @@
   "background": "I am the eldest son in my family with one younger sibling. My formative years were shaped by my divorced mother and later, a stepmother, following my father's passing. You may be thinking on why i did not pursue Degree in Computer Science right? That is because my academic pursuits were cut short before I could embark on a degree, due to my father's untimely death and financial constraints. Committed to staying debt-free and avoiding student loans, I am now intent on utilizing my diploma to find employment in the computer science industry. My resilience and pragmatic approach to overcoming life's challenges highlight my readiness to make a meaningful contribution to the workforce.",
   "traits": [
     {
+      "title": "Leader Mindset",
+      "icon": "mdi:account-group",
+      "description": "I am a team player who is always ready to help. I am a leader who is always ready to inspire. I do not mind being the center of attention. I am a leader who is always ready to guide and listen to the needs of the team members."
+    },
+    {
       "title": "Hyper-Focused",
       "icon": "mdi:lightning-bolt",
       "description": "When I lock onto a problem, I enter a state of deep flow. I don't just solve issues; I dismantle them until I understand every gear and cog."

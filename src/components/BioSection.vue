@@ -49,9 +49,14 @@
             </div>
           </div>
           
-          <div class="journey-box">
-            <h4><Icon icon="mdi:map-marker-path" /> My Journey</h4>
-            <p>{{ bio.background }}</p>
+          <div class="journey-box" :class="{ 'is-open': isJourneyOpen }" @click="toggleJourney">
+            <div class="journey-header">
+              <h4><Icon icon="mdi:map-marker-path" /> My Journey</h4>
+              <Icon :icon="isJourneyOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="toggle-icon" />
+            </div>
+            <div class="journey-content-wrapper">
+               <p>{{ bio.background }}</p>
+            </div>
           </div>
           
           <div class="action-row">
@@ -93,8 +98,14 @@ export default {
   components: { Icon },
   data() {
     return {
-      bio: bioData
+      bio: bioData,
+      isJourneyOpen: false
     };
+  },
+  methods: {
+    toggleJourney() {
+      this.isJourneyOpen = !this.isJourneyOpen;
+    }
   },
   computed: {
     age() {
@@ -333,24 +344,67 @@ export default {
   }
   
   .journey-box {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1.5rem;
-    border-radius: 12px;
-    border-left: 3px solid var(--secondary);
     margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
     
-    h4 {
-      color: var(--text-light);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
+    &:hover {
+      border-color: var(--primary);
+      background: rgba(0, 240, 255, 0.05);
     }
-    
-    p {
-      font-size: 0.95rem;
-      margin: 0;
+
+    .journey-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h4 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-light);
+        font-size: 1.1rem;
+      }
+
+      .toggle-icon {
+        color: var(--primary);
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+      }
+    }
+
+    .journey-content-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      p {
+        overflow: hidden;
+        margin: 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+    }
+
+    &.is-open {
+      border-color: var(--primary);
+      background: rgba(0, 240, 255, 0.05);
+
+      .journey-content-wrapper {
+        grid-template-rows: 1fr;
+        margin-top: 1rem;
+        
+        p {
+          opacity: 1;
+        }
+      }
     }
   }
   
