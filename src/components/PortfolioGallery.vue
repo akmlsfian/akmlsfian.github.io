@@ -13,14 +13,11 @@
         @click="openLightbox(project)"
       >
         <div class="image-wrapper">
-          <img :src="project.image" :alt="project.title" loading="lazy" />
+          <img :src="project.icon || project.image" :alt="project.title" loading="lazy" class="project-thumbnail" />
           <div class="overlay">
             <div class="overlay-content">
               <span>View Case Study</span>
             </div>
-          </div>
-          <div v-if="project.icon" class="project-icon-wrapper">
-             <img :src="project.icon" :alt="project.title + ' icon'" class="project-icon" />
           </div>
         </div>
 
@@ -31,7 +28,6 @@
           </div>
           <p class="role-tag">{{ project.role }}</p>
           <div class="tech-stack-mini">
-             <span v-for="t in (project.stack || []).slice(0, 3)" :key="t" class="tech-dot"></span>
              <span class="tech-text">{{ (project.stack || []).slice(0, 3).join(' · ') }}</span>
           </div>
         </div>
@@ -268,26 +264,6 @@ export default {
   width: 100%;
 }
 
-.project-icon-wrapper {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 48px;
-  height: 48px;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  
-  .project-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-}
 
 .gallery-nav {
   position: absolute;
@@ -409,10 +385,11 @@ export default {
   overflow: hidden;
   background: var(--surface-2);
   
-  img {
+  .project-thumbnail {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    padding: 1.5rem;
     transition: transform 0.5s ease;
   }
   
@@ -479,13 +456,6 @@ export default {
   align-items: center;
   gap: 0.5rem;
   
-  .tech-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--primary);
-    opacity: 0.5;
-  }
   
   .tech-text {
     font-size: 0.85rem;

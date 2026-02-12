@@ -1,8 +1,8 @@
 <template>
   <div class="skills-wrapper">
     <div class="section-header">
-      <h2>Engineering Context</h2>
-      <p>Technical systems and standards deployed in production environments.</p>
+      <h2>System Expertise</h2>
+      <p>Production-grade technologies and standards.</p>
     </div>
 
     <div class="skills-grid">

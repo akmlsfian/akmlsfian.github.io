@@ -4,7 +4,7 @@
       <div class="logo">
         <a href="#">
           <span class="text-primary">&lt;</span>
-          AkmalSufian
+          akmlsfian
           <span class="text-primary">/&gt;</span>
         </a>
       </div>
@@ -22,7 +22,7 @@
             {{ link.name }}
           </a>
         </div>
-        <a href="#contact" class="btn btn-sm btn-primary">Let's Talk</a>
+        <a href="#contact" class="btn btn-sm btn-primary">Contact</a>
       </div>
 
       <!-- Mobile Toggle -->
@@ -64,7 +64,7 @@ export default {
       links: [
         { name: 'About', href: '#about', id: 'about' },
         { name: 'Work', href: '#portfolio', id: 'portfolio' },
-        { name: 'Engineering', href: '#skills', id: 'skills' }
+        { name: 'Systems', href: '#skills', id: 'skills' }
       ]
     };
   },

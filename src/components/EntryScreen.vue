@@ -3,9 +3,9 @@
     <div v-if="visible" class="entry-screen" @click="enter">
       <div class="content">
         <h1 class="title">{{ displayedTitle }}</h1>
-        <p class="subtitle">Software Programmer & Web Developer</p>
+        <p class="subtitle">Frontend Engineer</p>
         <div class="hint">
-          <span class="click-text">Click to initialize</span>
+          <span class="click-text">Initialize System</span>
         </div>
       </div>
     </div>
