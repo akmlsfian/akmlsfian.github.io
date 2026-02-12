@@ -1,74 +1,59 @@
 <template>
   <div class="app-container">
-    <ParticlesBackground />
-    <NavBar />
+    <EntryScreen @enter="onEnter" />
+    <ParticlesBackground v-if="!isVisualizerRoute" />
+    
+    <div class="nav-wrapper" :class="{ 'visualizer-mode': isVisualizerRoute, 'controls-hidden': isVisualizerRoute && !isVisualizerControlsVisible }" v-if="isEntered">
+      <NavBar />
+    </div>
     
     <main>
-      <EntryScreen @enter="handleEnter" />
-      
-      <div v-if="entered" class="content-wrapper">
-        <section id="about" class="page-section">
-          <div class="container">
-            <BioSection />
-          </div>
-        </section>
-
-        <section id="skills" class="page-section">
-          <div class="container">
-            <SkillsSection />
-          </div>
-        </section>
-
-        <section id="portfolio" class="page-section">
-          <div class="container">
-            <PortfolioGallery />
-          </div>
-        </section>
-
-        <section id="contact" class="page-section">
-          <div class="container">
-            <ContactSection />
-          </div>
-        </section>
-      </div>
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </main>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue';
-import BioSection from './components/BioSection.vue';
-import SkillsSection from './components/SkillsSection.vue';
-import PortfolioGallery from './components/PortfolioGallery.vue';
-import ContactSection from './components/ContactSection.vue';
-import EntryScreen from './components/EntryScreen.vue';
 import ParticlesBackground from './components/ParticlesBackground.vue';
-import { Icon } from '@iconify/vue';
+import EntryScreen from './components/EntryScreen.vue';
 
 export default {
   name: 'App',
   components: {
     NavBar,
-    BioSection,
-    SkillsSection,
-    PortfolioGallery,
-    ContactSection,
-    EntryScreen,
     ParticlesBackground,
-    Icon
+    EntryScreen
   },
   data() {
     return {
-      entered: false
+      isEntered: false,
+      isVisualizerControlsVisible: true
     }
   },
+  computed: {
+    isVisualizerRoute() {
+      return this.$route.name === 'visualizer';
+    }
+  },
+  mounted() {
+    window.addEventListener('visualizer-ui-toggle', this.handleVisualizerUiToggle);
+  },
+  beforeUnmount() {
+    window.removeEventListener('visualizer-ui-toggle', this.handleVisualizerUiToggle);
+  },
   methods: {
-    handleEnter() {
-      this.entered = true;
-      // Smooth scroll to top after entry
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 100);
+    handleVisualizerUiToggle(e) {
+      this.isVisualizerControlsVisible = e.detail;
+    },
+    onEnter() {
+      this.isEntered = true;
+      // Scroll to top on enter
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 }
@@ -82,53 +67,99 @@ export default {
   min-height: 100vh;
 }
 
-.content-wrapper {
-  position: relative;
-  z-index: 10;
-  animation: fadeIn 1s ease-out;
-}
+.nav-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000; // Ensure it's above visualizer controls
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none; // Allow clicks to pass through wrapper by default
 
-.main-footer {
-  padding: 4rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  margin-top: 4rem;
-  
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 1.5rem;
+  // Default state (not visualizer) - allow clicks on children
+  &:not(.visualizer-mode) {
+    pointer-events: auto;
+  }
+
+  &.visualizer-mode {
+    // Desktop: Hidden by default, show when controls are visible
+    @media (min-width: 769px) {
+      .navbar {
+        transform: translate(-50%, -150%);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+      }
+
+      // Show when controls are visible (not hidden)
+      &:not(.controls-hidden) .navbar {
+        transform: translate(-50%, 0);
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
-  }
-  
-  p {
-    margin: 0;
-    font-size: 0.9rem;
-  }
-  
-  .social-links {
-    display: flex;
-    gap: 1.5rem;
-    
-    .social-icon {
-      color: var(--text-muted);
-      transition: all 0.3s ease;
+
+    // Mobile: Transparent background, floating toggle
+    @media (max-width: 768px) {
+      .navbar {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding-top: 1rem;
+        pointer-events: none; // Pass clicks through empty areas
+
+        .logo, .desktop-nav {
+          opacity: 0;
+          pointer-events: none;
+          display: none; // Hide logo to clear view
+        }
+
+        .mobile-toggle {
+          pointer-events: auto;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          margin-left: auto; // Push to right if flex container
+          
+          transition: all 0.3s ease;
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .mobile-menu {
+          pointer-events: auto;
+          background: rgba(10, 10, 15, 0.95);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+      }
       
-      &:hover {
-        color: var(--primary);
-        transform: translateY(-3px);
+      // Hide toggle when controls are hidden
+      &.controls-hidden .mobile-toggle {
+        opacity: 0;
+        transform: translateY(-20px);
+        pointer-events: none;
       }
     }
   }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

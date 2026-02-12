@@ -2,23 +2,23 @@
   <header class="navbar glass-panel" :class="{ 'scrolled': isScrolled }">
     <div class="container nav-container">
       <div class="logo">
-        <a href="#" @click.prevent="scrollToTop">
+        <router-link :to="{ name: 'home' }" @click="scrollToTop">
           <span class="text-primary">&lt;</span>akmlsfian<span class="text-primary">/&gt;</span>
-        </a>
+        </router-link>
       </div>
 
       <!-- Desktop Nav -->
       <nav class="desktop-nav">
         <ul class="nav-links">
           <li v-for="link in links" :key="link.id">
-            <a :href="link.href" @click.prevent="handleNav(link.href)">
+            <router-link :to="link.to" active-class="active-link">
               {{ link.text }}
-            </a>
+            </router-link>
           </li>
         </ul>
-        <a href="#contact" class="btn btn-sm btn-primary" @click.prevent="handleNav('#contact')">
+        <router-link :to="{ name: 'home', hash: '#contact' }" class="btn btn-sm btn-primary">
           Let's Talk
-        </a>
+        </router-link>
       </nav>
 
       <!-- Mobile Toggle -->
@@ -31,14 +31,14 @@
         <div v-if="isOpen" class="mobile-menu glass-panel">
           <ul class="mobile-links">
             <li v-for="link in links" :key="link.id">
-              <a :href="link.href" @click.prevent="handleNav(link.href)">
+              <router-link :to="link.to" @click="isOpen = false" active-class="active-link">
                 {{ link.text }}
-              </a>
+              </router-link>
             </li>
             <li>
-               <a href="#contact" class="btn btn-primary" @click.prevent="handleNav('#contact')">
+               <router-link :to="{ name: 'home', hash: '#contact' }" class="btn btn-primary" @click="isOpen = false">
                 Let's Talk
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -58,9 +58,10 @@ export default {
       isOpen: false,
       isScrolled: false,
       links: [
-        { id: 'about', text: 'About', href: '#about' },
-        { id: 'skills', text: 'Skills', href: '#skills' },
-        { id: 'portfolio', text: 'Work', href: '#portfolio' }
+        { id: 'about', text: 'About', to: { name: 'home', hash: '#about' } },
+        { id: 'skills', text: 'Skills', to: { name: 'home', hash: '#skills' } },
+        { id: 'portfolio', text: 'Work', to: { name: 'home', hash: '#portfolio' } },
+        { id: 'visualizer', text: '3D Visualizer', to: { name: 'visualizer' } }
       ]
     };
   },
@@ -76,13 +77,6 @@ export default {
     },
     scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    },
-    handleNav(href) {
-      this.isOpen = false;
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
     }
   }
 }
@@ -150,20 +144,23 @@ export default {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   
   a {
+    display: inline-block;
+    padding: 0.5rem 1rem; // Increase click area
     font-size: 0.95rem;
     font-weight: 500;
     color: var(--text-light);
     opacity: 0.8;
     position: relative;
+    transition: all 0.3s ease;
     
     &::after {
       content: '';
       position: absolute;
-      bottom: -4px;
-      left: 0;
+      bottom: 4px;
+      left: 1rem; // Match padding
       width: 0;
       height: 2px;
       background: var(--primary);
@@ -173,9 +170,20 @@ export default {
     &:hover {
       opacity: 1;
       color: var(--primary);
+      background: rgba(255, 255, 255, 0.05); // Subtle background on hover
+      border-radius: 8px;
       
       &::after {
-        width: 100%;
+        width: calc(100% - 2rem); // Width minus total horizontal padding
+      }
+    }
+    
+    &.active-link {
+      color: var(--primary);
+      opacity: 1;
+      
+      &::after {
+        width: calc(100% - 2rem);
       }
     }
   }
