@@ -4,7 +4,7 @@
     "title": "AskCPG",
     "category": "RAG & Generative AI",
     "role": "Frontend Architect",
-    "image": "/images/portfolio/AskCPG/icon.png",
+    "image": "/images/portfolio/AskCPG/page.png",
     "icon": "/images/portfolio/AskCPG/icon.png",
     "problem": "Clinical Practice Guidelines (CPGs) are dense, static PDF documents that are difficult for doctors to query in real-time during patient consultations. The system needed to deliver instant, hallucination-free answers from thousands of pages with source citations.",
     "solution": "Architected a real-time RAG (Retrieval-Augmented Generation) interface using a custom Server-Sent Events (SSE) streaming engine. Implemented a dual-stream architecture that renders citations parallel to generative text, ensuring clinical trust.",
@@ -35,9 +35,8 @@
       "repo": null
     },
     "gallery": [
-      "/images/portfolio/AskCPG/ask-me-2.png",
-      "/images/portfolio/AskCPG/ask-me.png",
-      "/images/portfolio/AskCPG/cover.png"
+      "/images/portfolio/AskCPG/page.png",
+      "/images/portfolio/AskCPG/Screenshot 2026-02-11 175923.png"
     ]
   },
   {
@@ -45,8 +44,8 @@
     "title": "DrMata AI",
     "category": "Medical AI & IoT",
     "role": "Full Stack Engineer",
-    "image": "/images/portfolio/DrMata/icon.png",
-    "icon": "/images/portfolio/DrMata/icon.png",
+    "image": "/images/portfolio/Drmata/drmata session.png",
+    "icon": "/images/portfolio/Drmata/icon.png",
     "problem": "Diabetic Retinopathy (DR) screening requires expensive fundus cameras and specialists. Integrating diverse legacy hardware (Topcon, Zeiss, Kowa) with cloud-based AI analysis posed significant interoperability and bandwidth challenges.",
     "solution": "Built a hardware-agnostic 'Device Adapter' pattern in the frontend that normalizes image data from various camera SDKs before upload. Implemented a resilient upload queue for high-resolution retinal images (10MB+) that handles intermittent clinic internet connectivity.",
     "architecture": "The system uses a Service Layer pattern (`imageProcessServices.js`) to decouple UI from complex API logic. It features a custom `HttpChunker` to handle large payload responses and integrates directly with Python backends for RWW (Retinal Vessel Width) segmentation.",
@@ -76,10 +75,8 @@
       "repo": null
     },
     "gallery": [
-      "/images/portfolio/DrMata/cover.png",
-      "/images/portfolio/DrMata/ddx.png",
-      "/images/portfolio/DrMata/more.png",
-      "/images/portfolio/DrMata/summary.png"
+      "/images/portfolio/Drmata/drmata session.png",
+      "/images/portfolio/Drmata/retina viewer.png"
     ]
   },
   {
@@ -87,8 +84,8 @@
     "title": "Nora Triage",
     "category": "Mobile Health",
     "role": "Mobile Architect",
-    "image": "/images/portfolio/NoraKPJ/icon.png",
-    "icon": "/images/portfolio/NoraKPJ/icon.png",
+    "image": "/images/portfolio/norakpj/startpage.png",
+    "icon": "/images/portfolio/norakpj/icon.png",
     "problem": "Patient triage in emergency departments is high-pressure and time-sensitive. The app needed to work reliably across iOS and Android devices with varying hardware capabilities, often in dead zones within hospitals.",
     "solution": "Engineered a 'Hybrid-Native' architecture using Quasar (Vue) and Capacitor. Implemented an 'Adapter Pattern' (`src/adapters/`) to abstract native device capabilities (Clipboard, Geolocation, Filesystem), allowing the same codebase to run in Web, iOS, and Android environments seamlessly.",
     "architecture": "The app uses a 'Local-First' data strategy. Critical triage logic is bundled within the app, minimizing API dependency. Capacitor plugins bridge the gap for hardware access, while the Vue layer handles complex form logic and state management.",
@@ -118,10 +115,8 @@
       "repo": null
     },
     "gallery": [
-      "/images/portfolio/NoraKPJ/cover.png",
-      "/images/portfolio/NoraKPJ/ask-me.png",
-      "/images/portfolio/NoraKPJ/banner.png",
-      "/images/portfolio/NoraKPJ/doctor-icon.png"
+      "/images/portfolio/norakpj/startpage.png",
+      "/images/portfolio/norakpj/symptom checker.png"
     ]
   },
   {
@@ -129,8 +124,8 @@
     "title": "QmedScribe",
     "category": "Ambient AI Scribe",
     "role": "Lead Frontend Engineer",
-    "image": "/images/portfolio/QmedScribe/icon.png",
-    "icon": "/images/portfolio/QmedScribe/icon.png",
+    "image": "/images/portfolio/qmedScribe/home page.png",
+    "icon": "/images/portfolio/qmedScribe/icon.png",
     "problem": "Doctors spend 40% of their time typing notes. Real-time transcription requires continuous audio streaming which usually freezes the main thread, causing UI jank. Latency in VAD (Voice Activity Detection) leads to cut-off sentences.",
     "solution": "Implemented a multi-threaded audio architecture. Used `AudioWorklet` (`vad-processor.js`) to process raw PCM audio samples off the main thread. Integrated `onnxruntime-web` with WASM to run a lightweight Silero VAD model directly in the browser.",
     "architecture": "The system employs a 'Hybrid Edge-Cloud' approach. The browser handles VAD and silence truncation using WebAssembly, sending only speech segments to the cloud. The response uses a custom `HttpChunker` to stream LLM tokens in real-time.",
@@ -170,10 +165,10 @@
       "repo": null
     },
     "gallery": [
-      "/images/portfolio/QmedScribe/cover.png",
-      "/images/portfolio/QmedScribe/ask-me.png",
-      "/images/portfolio/QmedScribe/banner.png",
-      "/images/portfolio/QmedScribe/medical-summary.png"
+      "/images/portfolio/qmedScribe/home page.png",
+      "/images/portfolio/qmedScribe/audio panel.png",
+      "/images/portfolio/qmedScribe/result.png",
+      "/images/portfolio/qmedScribe/template.png"
     ]
   }
 ]
