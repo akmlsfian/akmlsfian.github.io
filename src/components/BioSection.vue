@@ -4,7 +4,7 @@
       <!-- Main Content -->
       <div class="bio-content">
         <div class="intro-header">
-          <h1 class="name">{{ bio.name }}</h1>
+          <h1 class="name">{{ displayName }}</h1>
           <h2 class="role">{{ bio.title }}</h2>
           <p class="subtitle">{{ bio.subtitle }}</p>
         </div>
@@ -52,8 +52,52 @@ export default {
   components: { Icon },
   data() {
     return {
-      bio: bioData
+      bio: bioData,
+      displayName: 'akmlsfian'
     };
+  },
+  mounted() {
+    if (window.hasEntered) {
+      setTimeout(() => {
+        this.scrambleToName();
+      }, 500);
+    } else {
+      window.addEventListener('entry-complete', this.onEntryComplete);
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener('entry-complete', this.onEntryComplete);
+  },
+  methods: {
+    onEntryComplete() {
+      setTimeout(() => {
+        this.scrambleToName();
+      }, 500);
+    },
+    scrambleToName() {
+      const target = this.bio.name;
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      let iterations = 0;
+      
+      const interval = setInterval(() => {
+        this.displayName = target
+          .split("")
+          .map((letter, index) => {
+            if (index < iterations) {
+              return target[index];
+            }
+            return letters[Math.floor(Math.random() * letters.length)];
+          })
+          .join("");
+        
+        if (iterations >= target.length) {
+          clearInterval(interval);
+          this.displayName = target;
+        }
+        
+        iterations += 1; 
+      }, 50);
+    }
   }
 }
 </script>

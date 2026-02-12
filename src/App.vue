@@ -61,6 +61,8 @@ export default {
     },
     onEnter() {
       this.isEntered = true;
+      window.hasEntered = true;
+      window.dispatchEvent(new Event('entry-complete'));
       document.body.style.overflow = '';
       // Scroll to top on enter
       window.scrollTo({ top: 0, behavior: 'smooth' });
