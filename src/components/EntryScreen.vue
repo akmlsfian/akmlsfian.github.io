@@ -80,7 +80,9 @@ export default {
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .content {
