@@ -59,8 +59,8 @@ export default {
       isScrolled: false,
       links: [
         { id: 'about', text: 'About', to: { name: 'home', hash: '#about' } },
-        { id: 'skills', text: 'Skills', to: { name: 'home', hash: '#skills' } },
         { id: 'portfolio', text: 'Work', to: { name: 'home', hash: '#portfolio' } },
+        { id: 'skills', text: 'Skills', to: { name: 'home', hash: '#skills' } },
         { id: 'visualizer', text: '3D Visualizer', to: { name: 'visualizer' } }
       ]
     };

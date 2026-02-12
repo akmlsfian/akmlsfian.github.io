@@ -50,68 +50,106 @@
     </div>
 
     <!-- Lightbox -->
-    <Transition name="fade">
-      <div v-if="selectedProject" class="lightbox-overlay" @click.self="closeLightbox">
-        <div class="lightbox-content glass-panel">
-          <button class="close-btn" @click="closeLightbox">
-            <Icon icon="mdi:close" width="24" />
-          </button>
-          
-          <div class="lightbox-grid">
-            <div class="lightbox-image">
-              <div class="image-container">
-                <Transition name="fade" mode="out-in">
-                  <img :key="currentImage" :src="currentImage" :alt="selectedProject.title" />
-                </Transition>
-                
-                <div v-if="hasGallery" class="gallery-controls">
-                  <button class="control-btn prev" @click.stop="prevImage">
-                    <Icon icon="mdi:chevron-left" width="32" />
-                  </button>
-                  <button class="control-btn next" @click.stop="nextImage">
-                    <Icon icon="mdi:chevron-right" width="32" />
-                  </button>
+    <Teleport to="body">
+      <Transition name="fade">
+        <div v-if="selectedProject" class="lightbox-overlay" @click.self="closeLightbox">
+          <div class="lightbox-content glass-panel">
+            <button class="close-btn" @click="closeLightbox">
+              <Icon icon="mdi:close" width="24" />
+            </button>
+            
+            <div class="lightbox-grid">
+              <div class="lightbox-image">
+                <div class="image-container" @click="toggleFullscreen" title="Click to toggle fullscreen">
+                  <Transition name="fade" mode="out-in">
+                    <img :key="currentImage" :src="currentImage" :alt="selectedProject.title" />
+                  </Transition>
                   
-                  <div class="indicators">
-                    <span 
-                      v-for="(img, idx) in galleryImages" 
-                      :key="idx" 
-                      class="dot"
-                      :class="{ active: idx === currentImageIndex }"
-                      @click.stop="currentImageIndex = idx"
-                    ></span>
+                  <div class="fullscreen-hint">
+                    <Icon icon="mdi:fullscreen" /> Click to expand
+                  </div>
+                  
+                  <div v-if="hasGallery" class="gallery-controls">
+                    <button class="control-btn prev" @click.stop="prevImage">
+                      <Icon icon="mdi:chevron-left" width="32" />
+                    </button>
+                    <button class="control-btn next" @click.stop="nextImage">
+                      <Icon icon="mdi:chevron-right" width="32" />
+                    </button>
+                    
+                    <div class="indicators">
+                      <span 
+                        v-for="(img, idx) in galleryImages" 
+                        :key="idx" 
+                        class="dot"
+                        :class="{ active: idx === currentImageIndex }"
+                        @click.stop="currentImageIndex = idx"
+                      ></span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div class="lightbox-details">
-              <h3>{{ selectedProject.title }}</h3>
-              <span class="category-badge">{{ selectedProject.category }}</span>
               
-              <div class="divider"></div>
-              
-              <p class="description">{{ selectedProject.description }}</p>
-              
-              <div class="tech-stack-section">
-                <h4>Technologies</h4>
-                <div class="tags">
-                  <span v-for="tech in selectedProject.technologies" :key="tech" class="tech-tag">
-                    {{ tech }}
-                  </span>
+              <div class="lightbox-details">
+                <h3>{{ selectedProject.title }}</h3>
+                <span class="category-badge">{{ selectedProject.category }}</span>
+                
+                <div class="divider"></div>
+                
+                <p class="description">{{ selectedProject.description }}</p>
+                
+                <div class="tech-stack-section">
+                  <h4>Technologies</h4>
+                  <div class="tags">
+                    <span v-for="tech in selectedProject.technologies" :key="tech" class="tech-tag">
+                      {{ tech }}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="actions">
-                <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-primary">
-                  <Icon icon="mdi:rocket-launch" /> Live Demo
-                </a>
+                
+                <div class="actions">
+                  <a v-if="selectedProject.link" :href="selectedProject.link" target="_blank" class="btn btn-primary">
+                    <Icon icon="mdi:rocket-launch" /> Live Demo
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+
+      <!-- True Fullscreen Viewer -->
+      <Transition name="zoom">
+        <div v-if="isFullscreen && selectedProject" class="fullscreen-viewer" @click.self="toggleFullscreen">
+          <button class="fs-close-btn" @click="toggleFullscreen">
+            <Icon icon="mdi:close" width="32" />
+          </button>
+          
+          <div class="fs-content">
+            <img :src="currentImage" :alt="selectedProject.title" />
+          </div>
+
+          <div v-if="hasGallery" class="fs-controls">
+            <button class="fs-nav-btn prev" @click.stop="prevImage">
+              <Icon icon="mdi:chevron-left" width="48" />
+            </button>
+            <button class="fs-nav-btn next" @click.stop="nextImage">
+              <Icon icon="mdi:chevron-right" width="48" />
+            </button>
+            
+            <div class="fs-indicators">
+              <span 
+                v-for="(img, idx) in galleryImages" 
+                :key="idx" 
+                class="fs-dot"
+                :class="{ active: idx === currentImageIndex }"
+                @click.stop="currentImageIndex = idx"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -129,7 +167,8 @@ export default {
         technologies: item.technologies || (item.tech ? [item.tech] : [])
       })),
       selectedProject: null,
-      currentImageIndex: 0
+      currentImageIndex: 0,
+      isFullscreen: false
     };
   },
   computed: {
@@ -152,11 +191,16 @@ export default {
     openLightbox(project) {
       this.selectedProject = project;
       this.currentImageIndex = 0;
+      this.isFullscreen = false;
       document.body.style.overflow = 'hidden';
     },
     closeLightbox() {
       this.selectedProject = null;
+      this.isFullscreen = false;
       document.body.style.overflow = 'auto';
+    },
+    toggleFullscreen() {
+      this.isFullscreen = !this.isFullscreen;
     },
     nextImage() {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.galleryImages.length;
@@ -365,22 +409,34 @@ export default {
   inset: 0;
   background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(8px);
-  z-index: 1000;
+  z-index: 9990; /* Significantly higher than navbar */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    align-items: flex-start; /* Better for scroll on mobile */
+    overflow-y: auto;
+  }
 }
 
 .lightbox-content {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1400px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   background: #1e293b;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0;
+  
+  @media (max-width: 768px) {
+    max-height: none;
+    overflow-y: visible;
+    margin-top: 2rem;
+  }
   
   .close-btn {
     position: absolute;
@@ -389,15 +445,24 @@ export default {
     background: rgba(0, 0, 0, 0.5);
     border: none;
     color: #fff;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 10;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background 0.3s;
+    backdrop-filter: blur(4px);
+    
+    @media (max-width: 768px) {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9995; /* Ensure above everything on mobile */
+    }
     
     &:hover {
       background: var(--secondary);
@@ -407,9 +472,9 @@ export default {
 
 .lightbox-grid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.5fr 1fr; /* More space for image */
   
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     grid-template-columns: 1fr;
   }
 }
@@ -420,7 +485,8 @@ export default {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 400px;
+  min-height: 500px; /* Taller default */
+  overflow: hidden;
   
   .image-container {
     width: 100%;
@@ -429,13 +495,36 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: zoom-in;
+    
+    &:hover .fullscreen-hint {
+      opacity: 1;
+    }
+  }
+  
+  .fullscreen-hint {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
   }
   
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    max-height: 600px;
+    max-height: 80vh; /* Allow taller images */
   }
   
   .gallery-controls {
@@ -452,7 +541,7 @@ export default {
     background: rgba(0, 0, 0, 0.3);
     border: none;
     color: white;
-    padding: 1rem 0.5rem;
+    padding: 1.5rem 0.8rem;
     cursor: pointer;
     transition: background 0.3s;
     position: absolute;
@@ -581,5 +670,137 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Fullscreen Viewer */
+.fullscreen-viewer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000; /* Ensure it is the absolute top layer */
+  background: rgba(0, 0, 0, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.fs-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+
+  &:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    transform: rotate(90deg);
+  }
+}
+
+.fs-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove padding to maximize space */
+  
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: auto;
+  }
+}
+
+.fs-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10010;
+}
+
+.fs-nav-btn {
+  pointer-events: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 2rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  
+  &:hover {
+    color: var(--primary);
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  &.prev { left: 0; }
+  &.next { right: 0; }
+}
+
+.fs-indicators {
+  pointer-events: auto;
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  
+  .fs-dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    
+    &.active {
+      background: var(--primary);
+      transform: scale(1.3);
+      box-shadow: 0 0 8px var(--primary);
+    }
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+/* Zoom Transition */
+.zoom-enter-active,
+.zoom-leave-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.zoom-enter-from,
+.zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
 }
 </style>

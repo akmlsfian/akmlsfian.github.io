@@ -1,7 +1,9 @@
 [
   {
-    "category": "Backend",
+    "category": "Language",
     "skills": [
+      { "name": "VueJS", "level": 90 },
+      { "name": "ReactJS", "level": 75 },
       { "name": "NodeJS", "level": 85 },
       { "name": "Python", "level": 77 },
       { "name": "PHP Laravel", "level": 60 },
@@ -10,19 +12,10 @@
     ]
   },
   {
-    "category": "Frontend",
-    "skills": [
-      { "name": "VueJS", "level": 90 },
-      { "name": "ReactJS", "level": 75 },
-      { "name": "HTML", "level": 95 },
-      { "name": "CSS", "level": 85 }
-    ]
-  },
-  {
     "category": "DevOps & Infrastructure",
     "skills": [
       { "name": "Linux Integration", "level": 80 },
-      { "name": "Docker Setup", "level": 85 },
+      { "name": "Docker", "level": 85 },
       { "name": "Server Installation", "level": 85 },
       { "name": "CI/CD Pipelines", "level": 70 }
     ]
@@ -32,7 +25,6 @@
     "skills": [
       { "name": "MySQL", "level": 80 },
       { "name": "Firebase Realtime Database", "level": 71 },
-      { "name": "RabbitMQ", "level": 65 },
       { "name": "DynamoDB", "level": 50 }
     ]
   }

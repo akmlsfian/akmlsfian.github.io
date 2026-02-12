@@ -7,15 +7,15 @@
         </div>
       </section>
 
-      <section id="skills" class="page-section">
-        <div class="container">
-          <SkillsSection />
-        </div>
-      </section>
-
       <section id="portfolio" class="page-section">
         <div class="container">
           <PortfolioGallery />
+        </div>
+      </section>
+
+      <section id="skills" class="page-section">
+        <div class="container">
+          <SkillsSection />
         </div>
       </section>
 

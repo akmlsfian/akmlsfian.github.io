@@ -42,9 +42,13 @@ export default {
   },
   mounted() {
     window.addEventListener('visualizer-ui-toggle', this.handleVisualizerUiToggle);
+    if (!this.isEntered) {
+      document.body.style.overflow = 'hidden';
+    }
   },
   beforeUnmount() {
     window.removeEventListener('visualizer-ui-toggle', this.handleVisualizerUiToggle);
+    document.body.style.overflow = '';
   },
   methods: {
     handleVisualizerUiToggle(e) {
@@ -52,6 +56,7 @@ export default {
     },
     onEnter() {
       this.isEntered = true;
+      document.body.style.overflow = '';
       // Scroll to top on enter
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

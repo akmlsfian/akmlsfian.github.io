@@ -50,7 +50,8 @@ export default {
         { id: 'tunnel', label: 'Tunnel', icon: 'mdi:bullseye-arrow' },
         { id: 'grid', label: 'Matrix', icon: 'mdi:grid' },
         { id: 'wave', label: 'Wave', icon: 'mdi:waveform' },
-        { id: 'particles', label: 'Particles', icon: 'mdi:blur' }
+        { id: 'particles', label: 'Particles', icon: 'mdi:blur' },
+        { id: 'helix', label: 'Helix', icon: 'mdi:dna' }
       ],
       demoSongs: [
         { title: 'Eiffel 65 - Blue (Hardstyle Remix)', path: '/songs/Eiffel 65 - Blue (Hardstyle Remix By Team Blue) [MONKEY TEMPO].mp3' },
@@ -212,6 +213,7 @@ export default {
       else if (this.currentMode === 'grid') this.createGrid();
       else if (this.currentMode === 'wave') this.createWave();
       else if (this.currentMode === 'particles') this.createParticles();
+      else if (this.currentMode === 'helix') this.createHelix();
     },
     createOrb() {
       // Abstract Deforming Sphere (Smaller)
@@ -272,7 +274,7 @@ export default {
       // Infinite Grid/Terrain
       const geometry = new THREE.PlaneGeometry(100, 100, 50, 50);
       const material = new THREE.MeshPhongMaterial({ 
-        color: 0x110022, 
+        color: 0x050505, 
         emissive: 0xff0055,
         emissiveIntensity: 0.2,
         wireframe: true,
@@ -293,7 +295,7 @@ export default {
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
       const material = new THREE.MeshPhongMaterial({
         color: 0x00f0ff,
-        emissive: 0x0000aa,
+        emissive: 0x003033, // Dark cyan
         specular: 0xffffff,
         shininess: 100
       });
@@ -331,7 +333,7 @@ export default {
       const size = 10;
       const gap = 2;
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0055, wireframe: true });
 
       for(let x = 0; x < size; x++) {
         for(let z = 0; z < size; z++) {
@@ -401,6 +403,7 @@ export default {
           else if (this.currentMode === 'grid') this.animateGrid(data, avg, bass);
           else if (this.currentMode === 'wave') this.animateWave(data, avg, bass);
           else if (this.currentMode === 'particles') this.animateParticles(data, avg, bass);
+          else if (this.currentMode === 'helix') this.animateHelix(data, avg, bass);
           
           // Subtle camera sway
           if (this.currentMode !== 'infinity' && this.currentMode !== 'tunnel') {
@@ -575,6 +578,71 @@ export default {
       // Pulse scale
       const s = 1 + (bass / 100);
       points.scale.set(s, s, s);
+    },
+    createHelix() {
+      // Double Helix DNA
+      const geometry = new THREE.BufferGeometry();
+      const count = 1000;
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+      
+      const color1 = new THREE.Color(0x00f0ff);
+      const color2 = new THREE.Color(0xff0055);
+      
+      for(let i=0; i<count; i++) {
+        const i3 = i * 3;
+        const angle = i * 0.1;
+        const radius = 5;
+        const branch = i % 2 === 0 ? 1 : -1;
+        
+        // Store original angle and y for animation reference if needed, 
+        // but we'll recompute in animateHelix
+        positions[i3] = Math.cos(angle) * radius * branch;
+        positions[i3+1] = (i * 0.05) - 25; // Spread -25 to 25
+        positions[i3+2] = Math.sin(angle) * radius * branch;
+        
+        const c = i % 2 === 0 ? color1 : color2;
+        colors[i3] = c.r;
+        colors[i3+1] = c.g;
+        colors[i3+2] = c.b;
+      }
+      
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      
+      const material = new THREE.PointsMaterial({
+        size: 0.3,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+      });
+      
+      const points = new THREE.Points(geometry, material);
+      points.rotation.z = Math.PI / 6; 
+      this.meshGroup.add(points);
+    },
+    animateHelix(data, avg, bass) {
+      const points = this.meshGroup.children[0];
+      points.rotation.y += 0.02; // Spin
+      
+      const positions = points.geometry.attributes.position;
+      
+      for(let i=0; i<positions.count; i++) {
+         const y = positions.getY(i);
+         // Map Y position to data index
+         const idx = Math.floor(((y + 25) / 50) * data.length);
+         const safeIdx = Math.max(0, Math.min(idx, data.length - 1));
+         const val = data[safeIdx] / 255;
+         
+         const angle = i * 0.1;
+         const radius = 5 + (val * 5);
+         const branch = i % 2 === 0 ? 1 : -1;
+         
+         positions.setX(i, Math.cos(angle) * radius * branch);
+         positions.setZ(i, Math.sin(angle) * radius * branch);
+      }
+      positions.needsUpdate = true;
     },
     handleResize() {
       if (this.camera && this.renderer) {
