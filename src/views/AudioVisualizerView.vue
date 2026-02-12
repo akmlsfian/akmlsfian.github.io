@@ -530,6 +530,7 @@ export default {
       });
       
       this.camera.position.set(0, 0, 0); // Inside tunnel
+      this.camera.lookAt(0, 0, -100); // Look down the tunnel
     },
     animateGrid(data, avg, bass) {
       this.meshGroup.children.forEach((mesh, i) => {

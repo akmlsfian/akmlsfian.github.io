@@ -105,6 +105,8 @@ export default {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
         padding-top: 1rem;
         pointer-events: none; // Pass clicks through empty areas
 

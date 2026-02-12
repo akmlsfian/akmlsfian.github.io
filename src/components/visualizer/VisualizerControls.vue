@@ -392,13 +392,50 @@ export default {
   }
 }
 
-.playback-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  position: relative;
-  padding: 0.5rem 0;
+  .playback-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    padding: 0.5rem 0;
+
+    .volume-control {
+      position: absolute;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      
+      .mute-btn {
+        cursor: pointer;
+        opacity: 0.8;
+        &:hover { opacity: 1; color: var(--primary); }
+      }
+  
+      .volume-slider {
+        width: 70px;
+        height: 4px;
+        -webkit-appearance: none;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        outline: none;
+        
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: var(--text-light);
+          cursor: pointer;
+          &:hover { transform: scale(1.2); }
+        }
+      }
+    }
+  }
 
   .btn-icon {
     background: rgba(255,255,255,0.08);
@@ -424,44 +461,21 @@ export default {
     &:active {
       transform: scale(0.95);
     }
-  }
 
-  .volume-control {
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    
-    .mute-btn {
-      cursor: pointer;
-      opacity: 0.8;
-      &:hover { opacity: 1; color: var(--primary); }
-    }
-
-    .volume-slider {
-      width: 70px;
-      height: 4px;
-      -webkit-appearance: none;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 2px;
-      outline: none;
+    &.small {
+      width: 32px;
+      height: 32px;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.1);
+      border: none;
       
-      &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--text-light);
-        cursor: pointer;
-        &:hover { transform: scale(1.2); }
+      &:hover {
+        background: rgba(255, 0, 85, 0.2); // Red hover for close/reset
+        color: var(--secondary);
+        box-shadow: none;
       }
     }
   }
-}
 
 .mode-selector {
   display: flex;
