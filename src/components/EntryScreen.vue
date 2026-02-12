@@ -78,6 +78,9 @@ export default {
   cursor: pointer;
   backdrop-filter: blur(20px);
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .content {
