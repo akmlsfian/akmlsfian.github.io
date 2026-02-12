@@ -1,31 +1,34 @@
 [
   {
-    "category": "Language",
-    "skills": [
-      { "name": "VueJS", "level": 90 },
-      { "name": "ReactJS", "level": 75 },
-      { "name": "NodeJS", "level": 85 },
-      { "name": "Python", "level": 77 },
-      { "name": "PHP Laravel", "level": 60 },
-      { "name": "Java", "level": 60 },
-      { "name": "C++", "level": 50 }
+    "category": "Frontend Architecture",
+    "description": "Production-grade system design and state management",
+    "stack": [
+      "Vue 3 (Options & Composition)",
+      "TypeScript Strict Mode",
+      "Pinia / Vuex",
+      "Vite Build Optimization",
+      "Jest / Vitest"
     ]
   },
   {
-    "category": "DevOps & Infrastructure",
-    "skills": [
-      { "name": "Linux Integration", "level": 80 },
-      { "name": "Docker", "level": 85 },
-      { "name": "Server Installation", "level": 85 },
-      { "name": "CI/CD Pipelines", "level": 70 }
+    "category": "WebGL & Interaction",
+    "description": "High-performance rendering and immersive experiences",
+    "stack": [
+      "Three.js",
+      "GLSL Shaders",
+      "Canvas API",
+      "RequestAnimationFrame Loop Management"
     ]
   },
   {
-    "category": "Database",
-    "skills": [
-      { "name": "MySQL", "level": 80 },
-      { "name": "Firebase Realtime Database", "level": 71 },
-      { "name": "DynamoDB", "level": 50 }
+    "category": "Backend & Infrastructure",
+    "description": "Scalable server-side integration and deployment",
+    "stack": [
+      "Node.js",
+      "Python (FastAPI)",
+      "Docker Containerization",
+      "CI/CD Pipelines",
+      "Firebase / Supabase"
     ]
   }
 ]

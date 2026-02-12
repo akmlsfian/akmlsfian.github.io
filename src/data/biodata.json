@@ -1,43 +1,33 @@
 {
   "name": "Akmal Sufian",
-  "title": "Software Craftsman",
-  "subtitle": "Full Stack Developer",
+  "title": "Senior Frontend Engineer",
+  "subtitle": "Systems & Architecture",
   "personalInfo": {
     "fullName": "Mohamad Akmal Bin Mohamad Sufian",
-    "nickname": "Mal",
-    "birthDate": "2000-11-06",
-    "birthPlace": "Sungai Petani, Kedah",
-    "currentLocation": "Seri Kembangan",
-    "careerStartDate": "2022-11-21"
+    "location": "Seri Kembangan, Malaysia",
+    "experience": "3+ Years Production"
   },
   "contact": {
     "email": "akmalsir46@gmail.com",
-    "phone": "+6 019-432 0001",
     "linkedin": "https://www.linkedin.com/in/akmlsfian",
-    "github": "https://github.com/akmlsfian",
-    "whatsapp": "https://wa.me/60194320001?text=Hi, I am interested in your portfolio! May we connect?"
+    "github": "https://github.com/akmlsfian"
   },
-  "background": "I am the eldest son in my family with one younger sibling. My formative years were shaped by my divorced mother and later, a stepmother, following my father's passing. You may be thinking on why i did not pursue Degree in Computer Science right? That is because my academic pursuits were cut short before I could embark on a degree, due to my father's untimely death and financial constraints. Committed to staying debt-free and avoiding student loans, I am now intent on utilizing my diploma to find employment in the computer science industry. My resilience and pragmatic approach to overcoming life's challenges highlight my readiness to make a meaningful contribution to the workforce.",
+  "background": "I engineer high-performance frontend systems. My focus is on architectural scalability, rendering optimization, and developer experience. I move beyond simple UI implementation to build resilient, type-safe, and observable applications. I specialize in the Vue ecosystem, WebGL integration, and bridging the gap between design intent and engineering reality.",
   "traits": [
     {
-      "title": "Leader Mindset",
-      "icon": "mdi:account-group",
-      "description": "I am a team player who is always ready to help. I am a leader who is always ready to inspire. I do not mind being the center of attention. I am a leader who is always ready to guide and listen to the needs of the team members."
+      "title": "Systems Thinking",
+      "icon": "mdi:server-network",
+      "description": "I design component hierarchies and state management patterns that remain maintainable at scale, prioritizing long-term stability over short-term velocity."
     },
     {
-      "title": "Hyper-Focused",
-      "icon": "mdi:lightning-bolt",
-      "description": "When I lock onto a problem, I enter a state of deep flow. I don't just solve issues; I dismantle them until I understand every gear and cog."
+      "title": "Performance First",
+      "icon": "mdi:speedometer",
+      "description": "Zero tolerance for layout shifts or frame drops. I optimize bundle sizes, implement aggressive lazy-loading, and profile rendering cycles to ensure 60fps."
     },
     {
-      "title": "Rapid Adapter",
-      "icon": "mdi:rocket-launch",
-      "description": "I thrive in chaos. New stack? New framework? Give me a weekend and I'll not only learn it but find the best practices you missed."
-    },
-    {
-      "title": "Pattern Recognizer",
-      "icon": "mdi:brain",
-      "description": "I see connections others miss. My mind constantly maps complex systems, allowing me to predict bottlenecks before they even appear."
+      "title": "Product Engineering",
+      "icon": "mdi:chart-line",
+      "description": "I align technical decisions with business metrics. Every architectural choice is a trade-off made to support product goals and user retention."
     }
   ]
 }

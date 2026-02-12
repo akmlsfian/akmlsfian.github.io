@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <EntryScreen @enter="onEnter" />
+    <PerformanceBadge />
     <ParticlesBackground v-if="!isVisualizerRoute" />
     
     <div class="nav-wrapper" :class="{ 'visualizer-mode': isVisualizerRoute, 'controls-hidden': isVisualizerRoute && !isVisualizerControlsVisible }" v-if="isEntered">
@@ -18,16 +19,20 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
 import NavBar from './components/NavBar.vue';
-import ParticlesBackground from './components/ParticlesBackground.vue';
 import EntryScreen from './components/EntryScreen.vue';
+
+const ParticlesBackground = defineAsyncComponent(() => import('./components/ParticlesBackground.vue'));
+const PerformanceBadge = defineAsyncComponent(() => import('./components/PerformanceBadge.vue'));
 
 export default {
   name: 'App',
   components: {
     NavBar,
     ParticlesBackground,
-    EntryScreen
+    EntryScreen,
+    PerformanceBadge
   },
   data() {
     return {

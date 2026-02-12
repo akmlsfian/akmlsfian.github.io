@@ -32,6 +32,7 @@
 
 <script>
 import * as THREE from 'three';
+import ThreeManager from '@/utils/ThreeManager';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
@@ -211,8 +212,12 @@ export default {
     },
     initThree() {
       const container = this.$refs.canvasContainer;
+      
+      // Use ThreeManager to get the shared renderer and mount it
+      this.renderer = ThreeManager.mount(container);
+      
       this.scene = new THREE.Scene();
-      this.scene.fog = new THREE.FogExp2(0x000000, 0.03); // Denser fog for infinity
+      this.scene.fog = new THREE.FogExp2(0x0B0B0C, 0.03); // Match bg-dark
 
       this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       
@@ -222,13 +227,6 @@ export default {
       
       this.camera.lookAt(0, 0, 0);
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.renderer.setPixelRatio(window.devicePixelRatio);
-      this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.0;
-      container.appendChild(this.renderer.domElement);
-
       // Environment for PBR materials (Chrome, Glass)
       const pmremGenerator = new PMREMGenerator(this.renderer);
       pmremGenerator.compileEquirectangularShader();
@@ -236,11 +234,12 @@ export default {
 
       this.scene.add(new THREE.AmbientLight(0xffffff, 0.5));
       
-      const p1 = new THREE.PointLight(0x00f0ff, 2);
+      // Updated lights for new color scheme
+      const p1 = new THREE.PointLight(0x0fbab2, 2); // Primary Teal
       p1.position.set(20, 20, 20);
       this.scene.add(p1);
 
-      const p2 = new THREE.PointLight(0xff0055, 2);
+      const p2 = new THREE.PointLight(0xFFFFFF, 1.5); // Secondary White
       p2.position.set(-20, -20, -20);
       this.scene.add(p2);
 
@@ -256,11 +255,11 @@ export default {
         1.5, 0.4, 0.85
       );
       bloomPass.threshold = 0.2;
-      bloomPass.strength = 1.2; // Subtle bloom but visible
+      bloomPass.strength = 1.0; // Slightly reduced strength
       bloomPass.radius = 0.5;
 
       const rgbShiftPass = new ShaderPass(RGBShiftShader);
-      rgbShiftPass.uniforms['amount'].value = 0.002; // Subtle aberration
+      rgbShiftPass.uniforms['amount'].value = 0.0015; // Subtle aberration
 
       this.composer = new EffectComposer(this.renderer);
       this.composer.addPass(renderScene);
@@ -277,7 +276,7 @@ export default {
       // Global shockwave ring
       const geometry = new THREE.RingGeometry(10, 11, 64);
       const material = new THREE.MeshBasicMaterial({ 
-        color: 0x00f0ff, 
+        color: 0x0fbab2, 
         side: THREE.DoubleSide, 
         transparent: true, 
         opacity: 0
@@ -329,8 +328,8 @@ export default {
       // Abstract Deforming Sphere (Smaller)
       const geometry = new THREE.IcosahedronGeometry(4, 4);
       const material = new THREE.MeshPhongMaterial({ 
-        color: 0x000000, 
-        emissive: 0x00f0ff,
+        color: 0x0B0B0C, 
+        emissive: 0x0fbab2,
         emissiveIntensity: 0.5,
         wireframe: true,
         transparent: true,
@@ -357,11 +356,11 @@ export default {
         positions[i * 3 + 1] = (Math.random() - 0.5) * 2; // y (flat galaxy)
         positions[i * 3 + 2] = Math.sin(spiral) * radius; // z
         
-        // Aurora colors (Cyan to Purple)
+        // Aurora colors (Cyan to White)
         const mix = Math.random();
-        colors[i * 3] = mix * 0.5;     // R
-        colors[i * 3 + 1] = 1.0 - mix; // G
-        colors[i * 3 + 2] = 1.0;       // B
+        colors[i * 3] = mix * 0.0;     // R (Low red for cyan)
+        colors[i * 3 + 1] = 0.8 + (mix * 0.2); // G (High green for cyan/white)
+        colors[i * 3 + 2] = 0.8 + (mix * 0.2);       // B (High blue for cyan/white)
         
         sizes[i] = Math.random();
       }
@@ -386,7 +385,7 @@ export default {
       const radius = 10;
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
       const material = new THREE.MeshPhongMaterial({
-        color: 0x00f0ff,
+        color: 0x0fbab2,
         emissive: 0x003033, // Dark cyan
         specular: 0xffffff,
         shininess: 100
@@ -407,7 +406,7 @@ export default {
       const size = 10;
       const gap = 2;
       const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0055, wireframe: true });
+      const material = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, wireframe: true });
 
       for(let x = 0; x < size; x++) {
         for(let z = 0; z < size; z++) {
@@ -429,7 +428,7 @@ export default {
       // Digital Wave
       const geometry = new THREE.PlaneGeometry(60, 20, 63, 20);
       const material = new THREE.MeshBasicMaterial({ 
-        color: 0x00f0ff, 
+        color: 0x00E0E0, 
         wireframe: true,
         side: THREE.DoubleSide
       });
@@ -528,10 +527,10 @@ export default {
     createBlob() {
       const geometry = new THREE.IcosahedronGeometry(8, 40); // High subdivision
       const material = new THREE.MeshStandardMaterial({
-        color: 0x000000,
+        color: 0x0B0B0C,
         roughness: 0.1,
         metalness: 0.9,
-        emissive: 0x00f0ff,
+        emissive: 0x00E0E0,
         emissiveIntensity: 0.2,
       });
 
@@ -601,7 +600,7 @@ export default {
       }
       pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       const pMat = new THREE.PointsMaterial({
-        color: 0x00f0ff,
+        color: 0x00E0E0,
         size: 0.2,
         blending: THREE.AdditiveBlending
       });
@@ -617,7 +616,7 @@ export default {
 
       // Color shift based on mids
       const mid = data[data.length / 2] / 255;
-      particles.material.color.setHSL(0.5 + mid * 0.2, 1, 0.5);
+      particles.material.color.setHSL(0.5, 1, 0.5 + mid * 0.4);
       
       // Pulse inner particles
       const positions = particles.geometry.attributes.position;
@@ -633,8 +632,8 @@ export default {
     createTerrain() {
       const geometry = new THREE.PlaneGeometry(200, 200, 64, 64);
       const material = new THREE.MeshStandardMaterial({
-        color: 0x000000,
-        emissive: 0x00f0ff,
+        color: 0x0B0B0C,
+        emissive: 0x00E0E0,
         emissiveIntensity: 0.5,
         wireframe: true,
         displacementScale: 20
@@ -645,7 +644,7 @@ export default {
       this.meshGroup.add(mesh);
       
       // Fog
-      this.scene.fog = new THREE.FogExp2(0x000000, 0.02);
+      this.scene.fog = new THREE.FogExp2(0x0B0B0C, 0.02);
     },
     animateTerrain(data, avg, bass) {
       const mesh = this.meshGroup.children[0];
@@ -699,7 +698,7 @@ export default {
       
       // Nodes
       const pMat = new THREE.PointsMaterial({
-        color: 0x00f0ff,
+        color: 0x00E0E0,
         size: 0.5,
         transparent: true,
         opacity: 0.8
@@ -717,7 +716,7 @@ export default {
       const linePos = new Float32Array(maxConnections * 6); // 2 points per line * 3 coords
       lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
       const lineMat = new THREE.LineBasicMaterial({
-        color: 0x00f0ff,
+        color: 0x00E0E0,
         transparent: true,
         opacity: 0.2,
         blending: THREE.AdditiveBlending
@@ -788,8 +787,8 @@ export default {
          positions[i*3+2] = r * Math.sin(theta);
          
          colors[i*3] = 0;
-         colors[i*3+1] = 0.5 + Math.random()*0.5; // Cyan/Greenish
-         colors[i*3+2] = 1;
+         colors[i*3+1] = 0.8 + Math.random()*0.2; // Cyan
+         colors[i*3+2] = 0.8 + Math.random()*0.2; // Cyan
       }
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
@@ -806,7 +805,7 @@ export default {
       
       // Central Black Hole (Disk)
       const diskGeo = new THREE.CircleGeometry(4, 32);
-      const diskMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+      const diskMat = new THREE.MeshBasicMaterial({ color: 0x0B0B0C });
       const disk = new THREE.Mesh(diskGeo, diskMat);
       disk.rotation.x = -Math.PI/2;
       this.meshGroup.add(disk);
@@ -814,7 +813,7 @@ export default {
       // Accretion disk glow
       const ringGeo = new THREE.RingGeometry(4, 4.5, 32);
       const ringMat = new THREE.MeshBasicMaterial({ 
-        color: 0xffffff, 
+        color: 0x00E0E0, 
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.5
@@ -882,7 +881,7 @@ export default {
       const count = 200;
       const geometry = new THREE.TetrahedronGeometry(1, 0);
       const material = new THREE.MeshPhysicalMaterial({
-         color: 0x00f0ff,
+         color: 0x00E0E0,
          metalness: 1,
          roughness: 0.2,
          transmission: 0.5,
@@ -946,12 +945,12 @@ export default {
           ));
        }
        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-       const material = new THREE.LineBasicMaterial({ color: 0x00f0ff, linewidth: 2 });
+       const material = new THREE.LineBasicMaterial({ color: 0x00E0E0, linewidth: 2 });
        const line = new THREE.Line(geometry, material);
        this.meshGroup.add(line);
        
        // Inner ring
-       const material2 = new THREE.LineBasicMaterial({ color: 0xff0055, linewidth: 1, transparent: true, opacity: 0.5 });
+       const material2 = new THREE.LineBasicMaterial({ color: 0xFFFFFF, linewidth: 1, transparent: true, opacity: 0.5 });
        const line2 = new THREE.Line(geometry.clone(), material2);
        line2.scale.set(0.5, 0.5, 0.5);
        this.meshGroup.add(line2);
@@ -1031,7 +1030,7 @@ export default {
         mesh.scale.set(1, scaleY, 1);
         
         // Color shift based on height
-        mesh.material.color.setHSL(val / 255, 1, 0.5);
+        mesh.material.color.setHSL(0.5, 1, 0.3 + (val / 510)); // Cyan range
       });
       this.meshGroup.rotation.y += 0.005;
       this.meshGroup.rotation.z = Math.sin(Date.now() * 0.001) * 0.2;
@@ -1041,7 +1040,7 @@ export default {
         const val = data[i % (data.length/2)] / 255;
         mesh.position.y = val * 10;
         mesh.scale.set(1, 1 + val * 5, 1);
-        mesh.material.color.setHSL(0.3 + val * 0.5, 1, 0.5);
+        mesh.material.color.setHSL(0.5, 1, 0.3 + val * 0.7);
       });
       this.meshGroup.rotation.y += 0.002;
     },
@@ -1087,8 +1086,8 @@ export default {
       const positions = new Float32Array(count * 3);
       const colors = new Float32Array(count * 3);
       
-      const color1 = new THREE.Color(0x00f0ff);
-      const color2 = new THREE.Color(0xff0055);
+      const color1 = new THREE.Color(0x00E0E0);
+      const color2 = new THREE.Color(0xFFFFFF);
       
       for(let i=0; i<count; i++) {
         const i3 = i * 3;
@@ -1146,19 +1145,21 @@ export default {
       positions.needsUpdate = true;
     },
     handleResize() {
-      if (this.camera && this.renderer) {
+      if (this.camera) {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
         
         // Re-adjust camera z on resize
         const isMobile = window.innerWidth < 768;
         this.camera.position.z = isMobile ? 35 : 20;
       }
+      if (this.composer) {
+        this.composer.setSize(window.innerWidth, window.innerHeight);
+      }
     },
     cleanupThree() {
       cancelAnimationFrame(this.animationId);
-      if (this.renderer) this.renderer.dispose();
+      ThreeManager.unmount();
       if (this.scene) {
         this.scene.traverse((object) => {
           if (object.isMesh || object.isPoints) {
@@ -1179,7 +1180,7 @@ export default {
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at center, #111, #000);
+  background: radial-gradient(circle at center, #1a1a1c, #0b0b0c);
   cursor: pointer; /* Indicate interaction */
 }
 .canvas-wrapper {

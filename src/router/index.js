@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AudioVisualizerView from '../views/AudioVisualizerView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +12,7 @@ const router = createRouter({
     {
       path: '/visualizer',
       name: 'visualizer',
-      component: AudioVisualizerView
+      component: () => import('../views/AudioVisualizerView.vue')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

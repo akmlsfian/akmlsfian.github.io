@@ -1,50 +1,53 @@
 <template>
-  <header class="navbar glass-panel" :class="{ 'scrolled': isScrolled }">
-    <div class="container nav-container">
+  <nav class="navbar" :class="{ 'scrolled': isScrolled }">
+    <div class="nav-container">
       <div class="logo">
-        <router-link :to="{ name: 'home' }" @click="scrollToTop">
-          <span class="text-primary">&lt;</span>akmlsfian<span class="text-primary">/&gt;</span>
-        </router-link>
+        <a href="#">
+          <span class="text-primary">&lt;</span>
+          AkmalSufian
+          <span class="text-primary">/&gt;</span>
+        </a>
       </div>
 
-      <!-- Desktop Nav -->
-      <nav class="desktop-nav">
-        <ul class="nav-links">
-          <li v-for="link in links" :key="link.id">
-            <router-link :to="link.to" active-class="active-link">
-              {{ link.text }}
-            </router-link>
-          </li>
-        </ul>
-        <router-link :to="{ name: 'home', hash: '#contact' }" class="btn btn-sm btn-primary">
-          Let's Talk
-        </router-link>
-      </nav>
+      <!-- Desktop Menu -->
+      <div class="desktop-nav">
+        <div class="nav-links">
+          <a 
+            v-for="link in links" 
+            :key="link.name" 
+            :href="link.href"
+            :class="{ 'active-link': activeSection === link.id }"
+            @click.prevent="scrollTo(link.id)"
+          >
+            {{ link.name }}
+          </a>
+        </div>
+        <a href="#contact" class="btn btn-sm btn-primary">Let's Talk</a>
+      </div>
 
       <!-- Mobile Toggle -->
-      <button class="mobile-toggle" @click="isOpen = !isOpen" aria-label="Toggle Menu">
-        <Icon :icon="isOpen ? 'mdi:close' : 'mdi:menu'" width="28" />
+      <button class="mobile-toggle" @click="toggleMobileMenu" aria-label="Toggle Menu">
+        <Icon :icon="isMobileMenuOpen ? 'mdi:close' : 'mdi:menu'" width="24" />
       </button>
 
       <!-- Mobile Menu -->
-      <Transition name="slide-fade">
-        <div v-if="isOpen" class="mobile-menu glass-panel">
-          <ul class="mobile-links">
-            <li v-for="link in links" :key="link.id">
-              <router-link :to="link.to" @click="isOpen = false" active-class="active-link">
-                {{ link.text }}
-              </router-link>
-            </li>
-            <li>
-               <router-link :to="{ name: 'home', hash: '#contact' }" class="btn btn-primary" @click="isOpen = false">
-                Let's Talk
-              </router-link>
-            </li>
-          </ul>
+      <transition name="slide-fade">
+        <div v-if="isMobileMenuOpen" class="mobile-menu">
+          <div class="mobile-links">
+            <a 
+              v-for="link in links" 
+              :key="link.name" 
+              :href="link.href"
+              @click="handleMobileClick(link.id)"
+            >
+              {{ link.name }}
+            </a>
+            <a href="#contact" class="btn btn-primary" @click="isMobileMenuOpen = false">Let's Talk</a>
+          </div>
         </div>
-      </Transition>
+      </transition>
     </div>
-  </header>
+  </nav>
 </template>
 
 <script>
@@ -55,18 +58,19 @@ export default {
   components: { Icon },
   data() {
     return {
-      isOpen: false,
       isScrolled: false,
+      isMobileMenuOpen: false,
+      activeSection: 'about',
       links: [
-        { id: 'about', text: 'About', to: { name: 'home', hash: '#about' } },
-        { id: 'portfolio', text: 'Work', to: { name: 'home', hash: '#portfolio' } },
-        { id: 'skills', text: 'Skills', to: { name: 'home', hash: '#skills' } },
-        { id: 'visualizer', text: '3D Visualizer', to: { name: 'visualizer' } }
+        { name: 'About', href: '#about', id: 'about' },
+        { name: 'Work', href: '#portfolio', id: 'portfolio' },
+        { name: 'Engineering', href: '#skills', id: 'skills' }
       ]
     };
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll(); // Init
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
@@ -74,9 +78,32 @@ export default {
   methods: {
     handleScroll() {
       this.isScrolled = window.scrollY > 50;
+      
+      // Active section detection
+      const sections = ['about', 'portfolio', 'skills', 'contact'];
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            this.activeSection = section;
+          }
+        }
+      }
     },
-    scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollTo(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        this.activeSection = id;
+      }
+    },
+    toggleMobileMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    },
+    handleMobileClick(id) {
+      this.scrollTo(id);
+      this.isMobileMenuOpen = false;
     }
   }
 }
@@ -85,45 +112,39 @@ export default {
 <style lang="scss" scoped>
 .navbar {
   position: fixed;
-  top: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: calc(100% - 3rem); /* Matches container padding roughly */
-  max-width: 1400px; /* Aligns with main content */
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  padding: 0.75rem 2rem; /* Match container padding */
-  transition: all 0.3s var(--ease-in-out);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(0, 0, 0, 0.6); /* Darker initial state */
+  padding: 1.5rem 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+  border-bottom: 1px solid transparent;
 
   &.scrolled {
-    background: rgba(0, 0, 0, 0.85);
-    border-color: var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    padding: 0.75rem 2rem;
-  }
-
-  @media (max-width: 768px) {
-    top: 1rem;
-    width: calc(100% - 2rem);
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 0;
+    background: rgba(11, 11, 12, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
 .nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 0; /* Container padding handled by navbar */
-  max-width: none; /* Let navbar handle width */
+  position: relative;
 }
 
 .logo {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: -1px;
+  font-size: 1.25rem;
+  letter-spacing: -0.5px;
+  color: var(--text-light);
   
   a {
     display: flex;
@@ -135,7 +156,7 @@ export default {
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: 3rem;
   
   @media (max-width: 768px) {
     display: none;
@@ -144,47 +165,16 @@ export default {
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   
   a {
-    display: inline-block;
-    padding: 0.5rem 1rem; // Increase click area
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text-light);
-    opacity: 0.8;
-    position: relative;
-    transition: all 0.3s ease;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
     
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 4px;
-      left: 1rem; // Match padding
-      width: 0;
-      height: 2px;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-    
-    &:hover {
-      opacity: 1;
+    &:hover, &.active-link {
       color: var(--primary);
-      background: rgba(255, 255, 255, 0.05); // Subtle background on hover
-      border-radius: 8px;
-      
-      &::after {
-        width: calc(100% - 2rem); // Width minus total horizontal padding
-      }
-    }
-    
-    &.active-link {
-      color: var(--primary);
-      opacity: 1;
-      
-      &::after {
-        width: calc(100% - 2rem);
-      }
     }
   }
 }
@@ -195,6 +185,7 @@ export default {
   border: none;
   color: var(--text-light);
   cursor: pointer;
+  padding: 0;
   
   @media (max-width: 768px) {
     display: block;
@@ -206,10 +197,12 @@ export default {
   top: 100%;
   left: 0;
   width: 100%;
-  margin-top: 1rem;
-  padding: 1.5rem;
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.95);
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   
   .mobile-links {
     display: flex;
@@ -219,21 +212,15 @@ export default {
     
     a {
       font-size: 1.1rem;
-      font-weight: 600;
-      display: block;
+      font-weight: 500;
+      color: var(--text-light);
     }
   }
 }
 
-.btn-sm {
-  padding: 0.5rem 1.5rem;
-  font-size: 0.8rem;
-}
-
-/* Transitions */
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .slide-fade-enter-from,
