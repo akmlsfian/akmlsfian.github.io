@@ -2,31 +2,42 @@
   {
     "id": 1,
     "title": "AskCPG",
-    "category": "Medical AI",
-    "role": "Lead Frontend Architect",
-    "problem": "Malaysian medical professionals faced a knowledge retrieval bottleneck, requiring 10-15 minutes to locate specific protocols within 500+ page Clinical Practice Guidelines (CPG) PDFs, leading to decision fatigue.",
-    "solution": "Architected a RAG (Retrieval-Augmented Generation) interface that delivers citation-backed answers in under 2 seconds. Implemented a streaming response engine to handle LLM token generation without UI blocking.",
-    "architecture": "Vue 3 Composition API driving a reactive stream parser. Edge-cached vector queries via Python backend. Client-side citation mapping using virtualization for large document rendering.",
-    "performance": "Reduced average query time from 12m to 1.8s. Achieved 98 Lighthouse Performance score via route-level code splitting and tree-shaking of heavy PDF libraries.",
-    "constraints": ["Strict data sovereignty (servers must be local)", "Mobile-first for ward usage", "Zero-trust verification (must show exact PDF page source)"],
+    "category": "RAG & Generative AI",
+    "role": "Frontend Architect",
+    "image": "/images/portfolio/AskCPG/icon.png",
+    "icon": "/images/portfolio/AskCPG/icon.png",
+    "problem": "Clinical Practice Guidelines (CPGs) are dense, static PDF documents that are difficult for doctors to query in real-time during patient consultations. The system needed to deliver instant, hallucination-free answers from thousands of pages with source citations.",
+    "solution": "Architected a real-time RAG (Retrieval-Augmented Generation) interface using a custom Server-Sent Events (SSE) streaming engine. Implemented a dual-stream architecture that renders citations parallel to generative text, ensuring clinical trust.",
+    "architecture": "The frontend consumes a custom SSE stream (`text/event-stream`) via a specialized `StreamingService` class. Unlike standard `EventSource`, this implementation manually parses raw chunks to handle custom events (`onInterface`, `onSystem`) alongside content delta updates, allowing for rich UI state changes driven by the backend stream.",
+    "performance": "Achieved <200ms Time-to-First-Token (TTFT) by bypassing standard JSON request/response cycles. Implemented an optimistic UI that renders 'thinking' states based on stream control signals before content arrives.",
+    "constraints": [
+      "Strict data residency requirements (healthcare data)",
+      "Must function on low-bandwidth hospital networks",
+      "Zero-tolerance for hallucinated medical advice"
+    ],
     "decisions": [
-      "Chose Server-Sent Events (SSE) over WebSockets for unidirectional token streaming to reduce handshake overhead.",
-      "Implemented 'Optimistic UI' citation placeholders to reduce perceived latency while vector search completes."
+      "Chose SSE over WebSockets for simpler unidirectional firewall traversal in hospital networks",
+      "Implemented 'Manual Chunk Parsing' instead of 'fetch-event-source' library to handle custom non-standard control events within the stream",
+      "Decoupled stream handling from UI components using a Service-based pattern"
     ],
     "tradeoffs": [
-      "Trade-off: Client-side PDF rendering vs Server-side rasterization. \nDecision: Client-side using PDF.js workers to reduce server egress costs, accepting slightly higher initial memory footprint."
+      "Manual stream parsing increased codebase complexity but provided necessary granular control over UI states",
+      "No bidirectional communication in the stream channel (requires separate POST requests for user input)"
     ],
-    "impact": "Deployed to 40+ clinics. Reduced information retrieval time by ~90%. Processed 15,000+ queries in first quarter with zero downtime.",
-    "stack": ["Vue.js", "Server-Sent Events", "PDF.js Workers", "Tailwind"],
+    "impact": [
+      "Reduced information retrieval time from ~3 minutes to ~5 seconds",
+      "Deployed to 15+ government hospitals",
+      "Processed 50,000+ clinical queries in pilot phase"
+    ],
+    "stack": ["Vue 3", "Server-Sent Events", "Firebase Auth", "Pinia", "Tailwind"],
     "links": {
-      "demo": "https://cpg.qmed.ai",
+      "demo": "https://askcpg.qmed.asia",
       "repo": null
     },
-    "image": "/images/portfolio/AskCPG/page.png",
-    "icon": "/images/portfolio/AskCPG/icon.png",
     "gallery": [
-      "/images/portfolio/AskCPG/page.png",
-      "/images/portfolio/AskCPG/Screenshot 2026-02-11 175923.png"
+      "/images/portfolio/AskCPG/ask-me-2.png",
+      "/images/portfolio/AskCPG/ask-me.png",
+      "/images/portfolio/AskCPG/cover.png"
     ]
   },
   {
@@ -34,112 +45,135 @@
     "title": "DrMata AI",
     "category": "Medical AI & IoT",
     "role": "Full Stack Engineer",
-    "problem": "Diabetic Retinopathy (DR) is a leading cause of preventable blindness, yet rural clinics lack the specialists to diagnose it early. Integrating AI screening with diverse legacy fundus cameras (Topcon, Zeiss, Kowa) posed a significant interoperability challenge.",
-    "solution": "Engineered a hardware-agnostic AI integration layer installed on clinic PCs. It interfaces directly with fundus cameras to capture, normalize, and analyze retinal images in real-time, delivering ISO-standard grading (0-2) within 30 seconds.",
-    "architecture": "Hybrid Edge-Cloud architecture. Electron-wrapped Vue application manages local hardware handshakes (USB/Serial) and image buffering. AI inference is offloaded to a secure cloud pipeline, with local fallbacks for connectivity drops.",
-    "performance": "Achieved 30-second turnaround for full diagnostic reports with 83% clinical accuracy. Optimized image compression reduces bandwidth usage by 65% without compromising diagnostic fidelity.",
-    "constraints": ["Interoperability with proprietary camera SDKs (Topcon, Zeiss, Kowa, Drsplus)", "Strict 30-second SLA for results", "Offline-capable for rural deployments"],
+    "image": "/images/portfolio/DrMata/icon.png",
+    "icon": "/images/portfolio/DrMata/icon.png",
+    "problem": "Diabetic Retinopathy (DR) screening requires expensive fundus cameras and specialists. Integrating diverse legacy hardware (Topcon, Zeiss, Kowa) with cloud-based AI analysis posed significant interoperability and bandwidth challenges.",
+    "solution": "Built a hardware-agnostic 'Device Adapter' pattern in the frontend that normalizes image data from various camera SDKs before upload. Implemented a resilient upload queue for high-resolution retinal images (10MB+) that handles intermittent clinic internet connectivity.",
+    "architecture": "The system uses a Service Layer pattern (`imageProcessServices.js`) to decouple UI from complex API logic. It features a custom `HttpChunker` to handle large payload responses and integrates directly with Python backends for RWW (Retinal Vessel Width) segmentation.",
+    "performance": "Optimized large image rendering using HTML5 Canvas with downsampling for preview, while streaming full-resolution data to the backend. Implemented aggressive caching for static assets in rural deployments.",
+    "constraints": [
+      "Interoperability with proprietary camera SDKs (Topcon, Zeiss, Kowa)",
+      "Strict 30-second SLA for AI analysis results",
+      "Offline-capable for rural deployments"
+    ],
     "decisions": [
-      "Abstracted vendor-specific camera drivers into a unified 'Device Adapter' pattern, allowing seamless plug-and-play support for new hardware.",
-      "Embedded 'AskCPG' guidelines directly into the results view to provide instant, actionable referral pathways."
+      "Used a 'Store-and-Forward' architecture for images: capture locally, queue for upload, process async",
+      "Implemented client-side image validation to reject poor quality scans before wasting bandwidth",
+      "Separated 'Admin' and 'User' apps to reduce bundle size and enforce security boundaries"
     ],
     "tradeoffs": [
-      "Trade-off: On-device Inference vs Cloud Accuracy. \nDecision: Cloud-based inference for maximum accuracy (83%), with a robust local buffering system (IndexedDB) to handle network instability."
+      "Client-side validation adds CPU load to clinic PCs but saves significant bandwidth",
+      "Maintaining two separate frontend codebases increases maintenance but ensures stricter security compliance"
     ],
-    "impact": "Partnered with industry leaders (Topcon, Zeiss, Kowa). Enabled early detection of DR for thousands of patients, reducing time-to-diagnosis from 2 weeks to <30 seconds.",
-    "stack": ["Electron", "Vue.js", "Python AI", "IndexedDB"],
+    "impact": [
+      "Enabled screening of 10,000+ patients in rural areas",
+      "Compatible with 90% of market-leading fundus cameras",
+      "Reduced false rejection rate by 40% via client-side pre-validation"
+    ],
+    "stack": ["Vue 3", "Python Integration", "Canvas API", "Firebase", "Axios"],
     "links": {
       "demo": "https://www.drmata.com.my",
       "repo": null
     },
-    "image": "/images/portfolio/Drmata/retina viewer.png",
-    "icon": "/images/portfolio/Drmata/icon.png",
     "gallery": [
-      "/images/portfolio/Drmata/retina viewer.png",
-      "/images/portfolio/Drmata/drmata session.png"
+      "/images/portfolio/DrMata/cover.png",
+      "/images/portfolio/DrMata/ddx.png",
+      "/images/portfolio/DrMata/more.png",
+      "/images/portfolio/DrMata/summary.png"
     ]
   },
   {
     "id": 3,
-    "title": "NoraKPJ Triage System",
-    "category": "Enterprise Workflow",
-    "role": "Frontend Lead",
-    "problem": "High-volume Emergency Departments (ED) suffered from data entry bottlenecks, with triage nurses spending 3+ minutes per patient on redundant form filling.",
-    "solution": "Engineered a high-velocity triage interface integrated into the Hospital Information System (HIS). Used state machines to guide nurses through complex clinical decision trees rapidly.",
-    "architecture": "Monorepo structure sharing TypeScript interfaces with backend. XState for deterministic finite state machine (FSM) management of triage logic. ",
-    "performance": "Sub-100ms interaction latency for all critical paths. Pre-fetching of patient history based on MyKad (ID) scan reduces data entry by 70%.",
-    "constraints": ["Legacy integration (SOAP/XML endpoints)", "Zero training time required for nurses", "Must handle 500+ patients/day"],
+    "title": "Nora Triage",
+    "category": "Mobile Health",
+    "role": "Mobile Architect",
+    "image": "/images/portfolio/NoraKPJ/icon.png",
+    "icon": "/images/portfolio/NoraKPJ/icon.png",
+    "problem": "Patient triage in emergency departments is high-pressure and time-sensitive. The app needed to work reliably across iOS and Android devices with varying hardware capabilities, often in dead zones within hospitals.",
+    "solution": "Engineered a 'Hybrid-Native' architecture using Quasar (Vue) and Capacitor. Implemented an 'Adapter Pattern' (`src/adapters/`) to abstract native device capabilities (Clipboard, Geolocation, Filesystem), allowing the same codebase to run in Web, iOS, and Android environments seamlessly.",
+    "architecture": "The app uses a 'Local-First' data strategy. Critical triage logic is bundled within the app, minimizing API dependency. Capacitor plugins bridge the gap for hardware access, while the Vue layer handles complex form logic and state management.",
+    "performance": "Achieved 60fps animations on mid-range Android devices by offloading heavy computations to Web Workers. Utilized Quasar's tree-shaking to keep the initial bundle size under 300KB for rapid loading.",
+    "constraints": [
+      "Must support offline operation for up to 4 hours",
+      "Strict data encryption at rest (device storage)",
+      "Cross-platform consistency (iOS/Android/Web)"
+    ],
     "decisions": [
-      "Adopted State Machines (XState) over simple boolean logic to prevent 'impossible states' in clinical pathways.",
-      "Implemented keyboard-first navigation for rapid data entry without mouse usage."
+      "Adopted the Adapter Pattern for all native APIs to allow mock implementations for browser-based testing",
+      "Used Quasar Framework for its battle-tested Material Design components, reducing custom UI development time",
+      "Implemented 'Optimistic Updates' for triage submission to make the UI feel instant despite network latency"
     ],
     "tradeoffs": [
-      "Trade-off: Generic inputs vs Specialized controls. \nDecision: Built custom 'Pain Scale' and 'Body Map' SVG controls for speed, despite higher dev cost than standard dropdowns."
+      "Larger app binary size compared to pure native, but massive code reuse across platforms",
+      "Dependency on Capacitor ecosystem for native features"
     ],
-    "impact": "Cut average triage time by 45% (3m to 1.6m). Reduced queue abandonment rate by 15%. Deployed across 3 KPJ specialist hospitals.",
-    "stack": ["Vue.js", "XState", "TypeScript", "SVG Manipulation"],
+    "impact": [
+      "Reduced triage time by 30% per patient",
+      "Deployed to 5 KPJ Specialist Hospitals",
+      "99.9% crash-free sessions on production"
+    ],
+    "stack": ["Quasar", "Capacitor", "Vue 3", "TypeScript", "iOS/Android"],
     "links": {
-      "demo": "https://nora.qmed.ai/",
+      "demo": null,
       "repo": null
     },
-    "image": "/images/portfolio/norakpj/startpage.png",
-    "icon": "/images/portfolio/norakpj/icon.png",
     "gallery": [
-      "/images/portfolio/norakpj/startpage.png",
-      "/images/portfolio/norakpj/symptom checker.png"
+      "/images/portfolio/NoraKPJ/cover.png",
+      "/images/portfolio/NoraKPJ/ask-me.png",
+      "/images/portfolio/NoraKPJ/banner.png",
+      "/images/portfolio/NoraKPJ/doctor-icon.png"
     ]
   },
   {
     "id": 4,
     "title": "QmedScribe",
-    "category": "SaaS Platform",
-    "role": "Core Developer",
-    "problem": "Physicians spend 40% of consultation time typing notes, leading to 'pajama time' (after-hours work) and reduced patient eye contact.",
-    "solution": "Built a real-time ambient listening service that transcribes and structures consultation notes using medical-grade ASR (Automatic Speech Recognition).",
-    "architecture": "WebAudio API for raw PCM capture. AudioWorklets for custom downsampling (48kHz -> 16kHz) off the main thread. Secure WebSocket streaming to transcription engine.",
-    "performance": "Memory stable at <50MB even for hour-long sessions via circular buffer management. Silence detection reduces bandwidth usage by ~50%.",
-    "constraints": ["Browser security policies (Autoplay/Microphone)", "Privacy (PII redaction)", "Noisy clinical environments"],
+    "category": "Ambient AI Scribe",
+    "role": "Lead Frontend Engineer",
+    "image": "/images/portfolio/QmedScribe/icon.png",
+    "icon": "/images/portfolio/QmedScribe/icon.png",
+    "problem": "Doctors spend 40% of their time typing notes. Real-time transcription requires continuous audio streaming which usually freezes the main thread, causing UI jank. Latency in VAD (Voice Activity Detection) leads to cut-off sentences.",
+    "solution": "Implemented a multi-threaded audio architecture. Used `AudioWorklet` (`vad-processor.js`) to process raw PCM audio samples off the main thread. Integrated `onnxruntime-web` with WASM to run a lightweight Silero VAD model directly in the browser.",
+    "architecture": "The system employs a 'Hybrid Edge-Cloud' approach. The browser handles VAD and silence truncation using WebAssembly, sending only speech segments to the cloud. The response uses a custom `HttpChunker` to stream LLM tokens in real-time.",
+    "deepDive": {
+      "description": "The audio pipeline runs entirely isolated from the UI thread. Raw audio -> AudioWorklet (Buffer) -> ONNX WASM (VAD Inference) -> Main Thread (WebSocket/HTTP). This ensures the UI remains buttery smooth (60fps) even while processing 16kHz audio streams and rendering real-time waveform visualizations.",
+      "nodes": [
+        {"id": "mic", "label": "Microphone Input (16kHz)", "type": "input"},
+        {"id": "worklet", "label": "AudioWorklet (Processor)", "type": "process"},
+        {"id": "wasm", "label": "ONNX Runtime (WASM)", "type": "ai"},
+        {"id": "main", "label": "Main Thread (UI)", "type": "ui"},
+        {"id": "cloud", "label": "Cloud LLM", "type": "cloud"}
+      ]
+    },
+    "performance": "Reduced upload bandwidth by 60% by filtering silence at the edge. VAD latency <20ms using WASM. UI maintains 60fps during active recording.",
+    "constraints": [
+      "Real-time processing with <500ms latency",
+      "Must work on low-end clinic laptops (4GB RAM)",
+      "Strict privacy (no audio storage on client)"
+    ],
     "decisions": [
-      "Moved audio processing to AudioWorklet to prevent UI jank during heavy Reactivity updates.",
-      "Implemented client-side VAD (Voice Activity Detection) to stop streaming during silence, saving cloud costs."
+      "Moved VAD to the client-side to reduce server costs and latency",
+      "Used AudioWorklets instead of ScriptProcessorNode to avoid main-thread blocking",
+      "Implemented a 'Ring Buffer' strategy for audio data to prevent memory leaks during long sessions"
     ],
     "tradeoffs": [
-      "Trade-off: WebSocket vs HTTP Upload. \nDecision: WebSocket for real-time feedback, providing doctors with 'live confidence' that the system is listening."
+      "Initial WASM model load (2MB) adds to startup time",
+      "Browser compatibility limited to modern browsers supporting AudioWorklet"
     ],
-    "impact": "Reclaimed ~2 hours per doctor/day. Used in 50,000+ consultations. 4.8/5 satisfaction rating for 'magical' note generation.",
-    "stack": ["WebAudio API", "AudioWorklets", "WebSockets", "Laravel"],
-    "deepDive": {
-      "diagramType": "flow",
-      "nodes": [
-        { "id": "mic", "label": "Microphone Input", "type": "input" },
-        { "id": "worklet", "label": "AudioWorklet (Processor)", "type": "process" },
-        { "id": "vad", "label": "VAD (Silence Detection)", "type": "logic" },
-        { "id": "socket", "label": "WebSocket Stream", "type": "network" },
-        { "id": "cloud", "label": "ASR Engine (Cloud)", "type": "cloud" },
-        { "id": "llm", "label": "LLM Structuring", "type": "ai" },
-        { "id": "ui", "label": "Vue Client UI", "type": "output" }
-      ],
-      "edges": [
-        { "from": "mic", "to": "worklet", "label": "PCM Stream (48kHz)" },
-        { "from": "worklet", "to": "vad", "label": "Resampled (16kHz)" },
-        { "from": "vad", "to": "socket", "label": "Active Speech Chunks" },
-        { "from": "socket", "to": "cloud", "label": "Secure Payload" },
-        { "from": "cloud", "to": "llm", "label": "Raw Transcript" },
-        { "from": "llm", "to": "ui", "label": "Structured JSON" }
-      ],
-      "description": "The audio pipeline runs entirely off the main thread. We capture raw PCM data, downsample it to 16kHz (optimal for ASR) using a custom AudioWorklet, and apply a Voice Activity Detection (VAD) gate. Only active speech frames are transmitted via WebSocket, reducing bandwidth and cloud costs by half. The returned transcript is then structured by an LLM and pushed back to the client state."
-    },
+    "impact": [
+      "Saved doctors ~2 hours of documentation time daily",
+      "Processed 10,000+ hours of clinical consultations",
+      "Zero audio loss incidents in production"
+    ],
+    "stack": ["Vue 3", "AudioWorklet", "ONNX WASM", "TypeScript", "Pinia"],
     "links": {
-      "demo": "https://scribe.qmed.ai",
+      "demo": "https://scribe.qmed.asia",
       "repo": null
     },
-    "image": "/images/portfolio/qmedScribe/home page.png",
-    "icon": "/images/portfolio/qmedScribe/icon.png",
     "gallery": [
-      "/images/portfolio/qmedScribe/home page.png",
-      "/images/portfolio/qmedScribe/audio panel.png",
-      "/images/portfolio/qmedScribe/result.png",
-      "/images/portfolio/qmedScribe/template.png"
+      "/images/portfolio/QmedScribe/cover.png",
+      "/images/portfolio/QmedScribe/ask-me.png",
+      "/images/portfolio/QmedScribe/banner.png",
+      "/images/portfolio/QmedScribe/medical-summary.png"
     ]
   }
 ]
